@@ -1,0 +1,16 @@
+@media only screen and (max-width: 600px) {
+  .formContainer {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+}
+
+.example-card {
+  max-width: 100%;
+}
+
+.reservation-form {
+    background-color: black;
+    color: white;
+    padding: 15px
+}

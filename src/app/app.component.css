@@ -1,0 +1,53 @@
+mat-sidenav {
+  width: 15%;
+}
+
+.is-mobile .sidenav {
+  width: 40%;
+}
+
+/* * Actual Sticky Footer Styles */
+.all-wrap {
+  min-height: 100vh;
+}
+
+.main_content {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.content {
+  background: radial-gradient(ellipse at center, rgba(237, 237, 237, 1) 0%, rgba(246, 246, 246, 1) 53%, rgba(255, 255, 255, 1) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ededed', endColorstr='#ffffff', GradientType=1);
+  color: black;
+}
+
+/* * Make the component injected by <router-outlet> full height: */
+main {
+  display: flex;
+  flex-direction: column;
+}
+
+main>*:not(router-outlet) {
+  flex: 1;
+  display: block;
+}
+
+h1.app-name {
+  margin-left: 8px;
+}
+
+
+.router-link-active {
+  background-color: gainsboro;
+  color: black;
+}
+
+
+
+.is-mobile .toolbar {
+  position: fixed;
+  /* Make sure the toolbar will stay on top of the content as it scrolls past. */
+  z-index: 2;
+}
