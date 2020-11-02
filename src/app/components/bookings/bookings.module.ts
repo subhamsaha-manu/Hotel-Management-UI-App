@@ -6,20 +6,17 @@ import { BookingsDetailComponent } from './bookings-detail/bookings-detail.compo
 import { routes } from './bookings.routes';
 import { SharedModule } from '../shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import {MatIconModule} from '@angular/material/icon';
 
+import { AgGridModule} from "@ag-grid-community/angular";
+import { UpdateButtonComponent } from '../update-button/update-button.component';
 
 @NgModule({
-  declarations: [ BookingsFormComponent, BookingsListComponent, BookingsDetailComponent],
+  declarations: [ BookingsFormComponent, BookingsListComponent, BookingsDetailComponent,UpdateButtonComponent],
   imports: [
     RouterModule.forChild(routes),
     SharedModule,
     ReactiveFormsModule,
-    MatFormFieldModule,
-    MatIconModule,
-    MatInputModule
+    AgGridModule.withComponents([UpdateButtonComponent])
   ],
   exports:[
   ]

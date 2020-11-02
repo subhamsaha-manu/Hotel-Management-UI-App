@@ -1,1 +1,21 @@
-<p>bookings-list works!</p>
+<ag-grid-angular
+    style="width: 100%;"
+    class="ag-theme-balham"
+    [rowData]="rowData"
+    [columnDefs]="columnDefs"
+    [defaultColDef]="defaultColDef"
+    [enableBrowserTooltips]="true"
+    [pagination]="true"
+    [paginationPageSize]="paginationPageSize"
+    [domLayout]="domLayout"
+    [frameworkComponents]="frameworkComponents"    
+    [tooltipShowDelay]="tooltipShowDelay"
+    [rowSelection]="rowSelection"
+    [animateRows]="true"
+    [getRowNodeId]="getRowNodeId"
+    (gridReady)="onGridReady($event)"
+    (rowClicked)='onRowClicked($event)'
+    [modules]="modules">
+</ag-grid-angular>
+<button style="float:right;margin-top:5px" mat-raised-button color="warn" (click)="checkoutSelected()">Checkout</button>
+<button mat-raised-button color="primary" style="float:right;margin-top:5px;margin-right: 5px;" (click)="makeNewBooking()">New Booking</button>

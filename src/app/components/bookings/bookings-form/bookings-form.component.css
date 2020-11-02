@@ -1,7 +1,6 @@
 @media only screen and (max-width: 600px) {
   .formContainer {
-    padding-left: 8px;
-    padding-right: 8px;
+    color: gainsboro;
   }
 }
 
@@ -10,7 +9,35 @@
 }
 
 .reservation-form {
-    background-color: black;
-    color: white;
+    background-color:white;
     padding: 15px
+}
+
+/* Border */
+.mat-form-field-appearance-outline .mat-form-field-outline {
+  color: black;
+}
+/* Font color */
+input.mat-input-element {
+  color: black;
+}
+
+.formContainer{
+  background-color: gainsboro !important;
+}
+
+.form-group{
+  border: 5px solid black;
+  padding:20px 20px 0px 10px;
+  margin-bottom: 15px;
+}
+
+legend {
+  background-color: gray;
+  color: white;
+  padding: 5px 10px;
+}
+
+mat-radio-button{
+  margin-right: 10px;
 }
