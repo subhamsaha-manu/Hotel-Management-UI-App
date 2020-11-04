@@ -2,7 +2,7 @@ mat-sidenav {
   width: 15%;
 }
 
-.is-mobile .sidenav {
+.is-mobile-device > .sidenav {
   width: 40%;
 }
 

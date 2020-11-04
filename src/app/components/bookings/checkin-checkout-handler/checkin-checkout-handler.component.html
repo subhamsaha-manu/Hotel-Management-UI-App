@@ -1,0 +1,34 @@
+<h2 mat-dialog-title>Modify Checkin/Checkout</h2>
+<mat-dialog-content class="mat-typography">
+    <form [formGroup]="bookingCheckInCheckOutForm" (ngSubmit)="onSubmit()">
+        <mat-form-field appearance="outline" style="margin-right: 5px;">
+            <mat-label for="bookingId">Booking Id</mat-label>
+            <input matInput formControlName="bookingId" readonly>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label for="guestName">Guest Name</mat-label>
+            <input matInput formControlName="guestName" readonly>
+        </mat-form-field>
+        <p>
+            <label>Check In Done: </label>
+            <mat-radio-group formControlName="checkinDone">
+                <mat-radio-button value="true">Yes</mat-radio-button>
+                &nbsp; &nbsp;
+                <mat-radio-button value="false">No</mat-radio-button>
+            </mat-radio-group>
+        </p>
+        <p>
+            <label>Check Out Done: </label>
+            <mat-radio-group formControlName="checkOutDone">
+                <mat-radio-button value="true">Yes</mat-radio-button>
+                &nbsp; &nbsp;
+                <mat-radio-button value="false">No</mat-radio-button>
+            </mat-radio-group>
+        </p>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cancel</button>
+    <button mat-button [mat-dialog-close]="true" [disabled]="!bookingCheckInCheckOutForm.valid" type="submit"
+        (click)="onSubmit()">Submit</button>
+</mat-dialog-actions>

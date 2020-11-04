@@ -5,6 +5,8 @@ import { ClientSideRowModelModule } from '@ag-grid-community/client-side-row-mod
 import { BookingsFormComponent } from '../bookings-form/bookings-form.component';
 import { Router } from '@angular/router';
 import { UpdateButtonComponent } from '../../update-button/update-button.component';
+import { MatDialog } from '@angular/material/dialog';
+import { CheckinCheckoutHandlerComponent } from '../checkin-checkout-handler/checkin-checkout-handler.component';
 @Component({
   selector: 'app-bookings-list',
   templateUrl: './bookings-list.component.html',
@@ -24,10 +26,10 @@ export class BookingsListComponent implements OnInit {
   public getRowNodeId;
 
   rowData: Booking[];
-  constructor(private bookingDataService: BookingsDataService,private router: Router) {
+  constructor(public dialog: MatDialog,private bookingDataService: BookingsDataService,private router: Router) {
 
     this.getRowNodeId = function (data) {
-      return data.id;
+      return data.bookingId;
     };
     this.domLayout = 'autoHeight';
     this.tooltipShowDelay =100;
@@ -36,8 +38,6 @@ export class BookingsListComponent implements OnInit {
     this.frameworkComponents = {
       btnCellRenderer: UpdateButtonComponent
     };
-
-
    }
 
   ngOnInit(): void {
@@ -45,11 +45,12 @@ export class BookingsListComponent implements OnInit {
   }
 
   columnDefs = [
-    { headerName: 'BookingId', field: 'bookingId' },
-    { headerName: 'Guest Name', field: 'guestName' },
-    { headerName: 'CheckIn', field: 'dateFrom' },
-    { headerName: 'CheckOut', field: 'dateTo' },
-    { headerName: 'Full Payment Done', field: 'fullPaymentDone' },
+    { headerName:'',field:'',checkboxSelection:true,width:50},
+    { headerName: 'BookingId', field: 'bookingId',width:100},
+    { headerName: 'Guest Name', field: 'guestName'},
+    { headerName: 'CheckIn', field: 'checkinDate' },
+    { headerName: 'CheckOut', field: 'checkoutDate' },
+    { headerName: 'Full Payment Done', field: 'fullPaymentDoneStr' },
     {
       headerName: 'Update',
       cellRenderer: 'btnCellRenderer',
@@ -68,13 +69,19 @@ export class BookingsListComponent implements OnInit {
     this.rowData = this.bookingDataService.bookings;
     //this.renderTable();   
   }
-  onRowClicked(event: any) {
+  onRowClicked(event) {
     console.log('row',event.data);
-    
+    this.router.navigateByUrl('/bookings/edit/'+event.data.bookingId);
   }
 
-  checkoutSelected(){
-
+  checkInCheckOutHandler(){
+    var selectedRow = this.gridApi.getSelectedRows();
+    console.log(selectedRow[0].bookingId)
+    if(selectedRow.length == 1){
+      this.dialog.open(CheckinCheckoutHandlerComponent,{
+        data: {bookingId:selectedRow[0].bookingId}
+      });
+    }
   }
 
   makeNewBooking(){

@@ -20,42 +20,62 @@ export class RefDataService {
       .pipe(map((data: any[]) => data.map(item => this.adapter.adapt(item))));
   }
 
-  roomTypes(dateFrom: string, dateTo: string): Observable<String> {
+  roomTypes(checkinDate: Date,checkinTime: string, checkoutDate: Date, checkoutTime: string, bookingId?: string): Observable<String> {
     const url = this.baseUrl + "/findRoomTypes";
     let params = new HttpParams();
     //console.log("Service roomTypes ",dateFrom+" "+dateTo)
-    dateFrom = "2020-11-01T22:22:22"
-    dateTo="2020-11-02T22:22:22"
-    params = params.append('dateFrom', dateFrom);
-    params = params.append('dateTo', dateTo);
+    
+    params = params.append('checkinDate', this.converDateFormat(checkinDate));
+    params = params.append('checkinTime', checkinTime+":00");
+    params = params.append('checkoutDate', this.converDateFormat(checkoutDate));
+    params = params.append('checkoutTime', checkoutTime+":00");
+    params = params.append('bookingId', bookingId);
 
     return this.http.get<String>(url, { params: params });
   }
 
-  roomSizes(dateFrom: string, dateTo: string,roomType:string): Observable<String> {
+  roomSizes(checkinDate: Date,checkinTime: string, checkoutDate: Date, checkoutTime: string,roomType:string,bookingId?: string): Observable<String> {
     const url = this.baseUrl + "/findRoomSizes";
     let params = new HttpParams();
     //console.log("Service roomSizes ",dateFrom+" "+dateTo+" "+roomType)
-    dateFrom = "2020-11-01T22:22:22"
-    dateTo="2020-11-02T22:22:22"
-    params = params.append('dateFrom', dateFrom);
-    params = params.append('dateTo', dateTo);
+
+    params = params.append('checkinDate', this.converDateFormat(checkinDate));
+    params = params.append('checkinTime', checkinTime+":00");
+    params = params.append('checkoutDate', this.converDateFormat(checkoutDate));
+    params = params.append('checkoutTime', checkoutTime+":00");
     params = params.append('roomType', roomType);
+    params = params.append('bookingId', bookingId);
 
     return this.http.get<String>(url, { params: params });
   }
 
-  roomNumbers(dateFrom: string, dateTo: string,roomType: string,roomSize: string): Observable<String> {
+  roomNumbers(checkinDate: Date,checkinTime: string, checkoutDate: Date, checkoutTime: string,roomType: string,roomSize: string,bookingId?: string): Observable<String> {
     const url = this.baseUrl + "/findRoomNumbers";
     let params = new HttpParams();
     //console.log("Service roomNumbers ",dateFrom+" "+dateTo+" "+" "+roomType+" "+roomSize)
-    dateFrom = "2020-11-01T22:22:22"
-    dateTo="2020-11-02T22:22:22"
-    params = params.append('dateFrom', dateFrom);
-    params = params.append('dateTo', dateTo);
+
+    params = params.append('checkinDate', this.converDateFormat(checkinDate));
+    params = params.append('checkinTime', checkinTime+":00");
+    params = params.append('checkoutDate', this.converDateFormat(checkoutDate));
+    params = params.append('checkoutTime', checkoutTime+":00");
     params = params.append('roomType', roomType)
     params = params.append('roomSize', roomSize)
+    params = params.append('bookingId', bookingId);
 
     return this.http.get<String>(url, { params: params });
+  }
+
+
+  converDateFormat(date: Date): string {
+    var month = '' + (date.getMonth() + 1),
+      day = '' + date.getDate(),
+      year = date.getFullYear();
+
+    if (month.length < 2)
+      month = '0' + month;
+    if (day.length < 2)
+      day = '0' + day;
+
+    return [year, month, day].join('-');
   }
 }

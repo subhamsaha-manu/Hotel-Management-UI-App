@@ -7,16 +7,19 @@ import { routes } from './bookings.routes';
 import { SharedModule } from '../shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
 
+import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
 import { AgGridModule} from "@ag-grid-community/angular";
 import { UpdateButtonComponent } from '../update-button/update-button.component';
+import { CheckinCheckoutHandlerComponent } from './checkin-checkout-handler/checkin-checkout-handler.component';
 
 @NgModule({
-  declarations: [ BookingsFormComponent, BookingsListComponent, BookingsDetailComponent,UpdateButtonComponent],
+  declarations: [ BookingsFormComponent, BookingsListComponent, BookingsDetailComponent,UpdateButtonComponent, CheckinCheckoutHandlerComponent],
   imports: [
     RouterModule.forChild(routes),
     SharedModule,
     ReactiveFormsModule,
-    AgGridModule.withComponents([UpdateButtonComponent])
+    AgGridModule.withComponents([UpdateButtonComponent]),
+    NgxMaterialTimepickerModule
   ],
   exports:[
   ]

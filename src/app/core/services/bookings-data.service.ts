@@ -1,5 +1,7 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable, throwError } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
 import { Booking } from '../models/booking.model';
 
 @Injectable({
@@ -8,46 +10,77 @@ import { Booking } from '../models/booking.model';
 export class BookingsDataService {
 
   private baseUrl = "http://192.168.0.105:8081/booking/api";
-  
+
 
   constructor(private http: HttpClient) { }
 
-  public bookings:Booking[]
+  public bookings: Booking[]
 
-  saveData(bookingForm){
+  saveData(bookingForm) {
     var url = this.baseUrl + "/save";
-    var newBooking = new Booking(
-      bookingForm.firstName + bookingForm.middleName + bookingForm.lastName,
-      bookingForm.contactInfo.idType,
-      bookingForm.contactInfo.idNumber,
-      +bookingForm.guestDetails.adults + +bookingForm.guestDetails.child,
-      this.converDateFormat(bookingForm.bookingDetails.checkin),
-      this.converDateFormat(bookingForm.bookingDetails.checkout),
-      bookingForm.bookingDetails.roomNumber,
-      bookingForm.bookingDetails.roomSize,
-      bookingForm.bookingDetails.roomType,
-      bookingForm.guestDetails.paymentStatus,
-      bookingForm.bookingDetails.bookingStatus,
-      bookingForm.guestDetails.paymentAmount);
+    bookingForm.checkinDate = this.converDateFormat(new Date(bookingForm.checkinDate))
+    bookingForm.checkinTime = bookingForm.checkinTime + ":00"
+    bookingForm.checkoutDate = this.converDateFormat(new Date(bookingForm.checkoutDate))
+    bookingForm.checkoutTime = bookingForm.checkoutTime + ":00"
 
-      this.http.post<Booking>(url,newBooking).subscribe(data=>{
-        console.log(data);
-      })
+    return this.http.post(url, bookingForm,{responseType: 'text'}).pipe(
+      catchError(err =>this.handleError('saveData', err))
+    );
+  }
+
+  updateData(bookingForm) {
+    var url = this.baseUrl + "/update";
+    bookingForm.checkinDate = this.converDateFormat(new Date(bookingForm.checkinDate))
+    bookingForm.checkinTime = bookingForm.checkinTime + ":00"
+    bookingForm.checkoutDate = this.converDateFormat(new Date(bookingForm.checkoutDate))
+    bookingForm.checkoutTime = bookingForm.checkoutTime + ":00"
+
+    return this.http.post(url, bookingForm,{responseType: 'text'}).pipe(
+      catchError(err =>this.handleError('updateData', err))
+    );
     //console.log(newBooking)
   }
 
-  converDateFormat(date:Date):string{
-    var formatedDate:string ="";
-    formatedDate+= date.getFullYear() + "-" + (date.getMonth()+1) + "-" + date.getDate();
-    var today = new Date();
-    formatedDate+="T"+today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-    return formatedDate;
+  converDateFormat(date: Date): string {
+    var month = '' + (date.getMonth() + 1),
+      day = '' + date.getDate(),
+      year = date.getFullYear();
+
+    if (month.length < 2)
+      month = '0' + month;
+    if (day.length < 2)
+      day = '0' + day;
+
+    return [year, month, day].join('-');
   }
 
-  fetchData(){
+  fetchData() {
     var url = this.baseUrl + "/findAll"
-    return this.http.get<Booking[]>(url).subscribe(data =>{
-      this.bookings = data
+    this.http.get<Booking[]>(url).pipe(catchError(err =>this.handleError('fetchData', err))).subscribe(response => {
+      response.map(data => {
+        data.guestName = data.firstName + " " + data.middleName + " " + data.lastName
+        data.checkinTime = data.checkinTime.substring(0,data.checkinTime.length-3)
+        data.checkoutTime = data.checkoutTime.substring(0,data.checkoutTime.length-3)
+      })
+      this.bookings = response
     })
+  }
+
+
+  private handleError(method:string,error: HttpErrorResponse) {
+    if (error.error instanceof ErrorEvent) {
+      // A client-side or network error occurred. Handle it accordingly.
+      console.error('An error occurred:', error.error.message);
+    } else {
+      // The backend returned an unsuccessful response code.
+      // The response body may contain clues as to what went wrong.
+      /*console.error(
+        `Backend returned code ${error.status}, ` +
+        `body was: ${error.message}`);*/
+      console.log(JSON.parse(error.error).code)
+    }
+    // Return an observable with a user-facing error message.
+    return throwError(
+      'Something bad happened; please try again later.');
   }
 }
