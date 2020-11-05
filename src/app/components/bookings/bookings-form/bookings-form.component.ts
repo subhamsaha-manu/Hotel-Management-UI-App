@@ -7,6 +7,13 @@ import { RefDataService } from 'src/app/core/services/ref-data.service';
 import { ActivatedRoute } from '@angular/router';
 import { Booking } from 'src/app/core/models/booking.model';
 
+import {
+  MatSnackBar,
+  MatSnackBarHorizontalPosition,
+  MatSnackBarVerticalPosition,
+} from '@angular/material/snack-bar';
+
+
 let emailRegex = "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$";
 
 @Component({
@@ -15,6 +22,9 @@ let emailRegex = "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$";
   styleUrls: ['./bookings-form.component.css']
 })
 export class BookingsFormComponent implements OnInit {
+
+  horizontalPosition: MatSnackBarHorizontalPosition = 'center';
+  verticalPosition: MatSnackBarVerticalPosition = 'bottom';
 
   @ViewChild('checkOutDP') checkOutDP;
   reservationForm: FormGroup;
@@ -29,7 +39,8 @@ export class BookingsFormComponent implements OnInit {
   private _checkoutDate: Date;
   private _checkoutTime: string;
   private _roomType: string;
-  constructor(private dataService: RefDataService, private bookingDataService: BookingsDataService, private route: ActivatedRoute) { }
+  private _roomSize: string;
+  constructor(private _snackBar: MatSnackBar,private dataService: RefDataService, private bookingDataService: BookingsDataService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
 
@@ -66,7 +77,7 @@ export class BookingsFormComponent implements OnInit {
       roomSize: new FormControl({ value: '', disabled: true }),
       roomNumber: new FormControl({ value: '', disabled: true }),
       bookingStatus: new FormControl({ value: '', disabled: true }),
-      checkinDone: new FormControl(''),
+      checkinDone: new FormControl({value:"false",disabled:true}),
       checkoutDone: new FormControl(''),
       bookingId: new FormControl('')
     });
@@ -101,8 +112,8 @@ export class BookingsFormComponent implements OnInit {
           })
       this.reservationForm.setValue(this.existingBooking)
       this.reservationForm.patchValue({
-        checkinDone: this.existingBooking.checkinDone+"",
-        fullPaymentDone : this.existingBooking.fullPaymentDone+""
+        checkinDone: this.existingBooking.checkinDone + "",
+        fullPaymentDone: this.existingBooking.fullPaymentDone + ""
       })
       this.reservationForm.get('roomType').enable()
 
@@ -129,7 +140,7 @@ export class BookingsFormComponent implements OnInit {
     this._checkinDate = this.reservationForm.get('checkinDate').value
     this._checkinTime = this.reservationForm.get('checkinTime').value
     this._checkoutDate = this.reservationForm.get('checkoutDate').value
-    this._checkoutTime = event+""
+    this._checkoutTime = event + ""
     this.dataService.roomTypes(this._checkinDate, this._checkinTime, this._checkoutDate, this._checkoutTime).subscribe(
       data => {
         this.roomTypes = data
@@ -152,7 +163,7 @@ export class BookingsFormComponent implements OnInit {
         this.existingBooking.checkinTime,
         new Date(this.existingBooking.checkoutDate),
         this.existingBooking.checkoutTime,
-        this.existingBooking.roomType,
+        this._roomType,
         this.existingBooking.bookingId).subscribe(
           data => {
             this.roomSizes = data
@@ -163,6 +174,7 @@ export class BookingsFormComponent implements OnInit {
 
   onChangeRoomSize(roomSize: string) {
 
+    this._roomSize = roomSize
     if (!this.existingBookingId) {
       this.dataService.roomNumbers(this._checkinDate, this._checkinTime, this._checkoutDate, this._checkoutTime, this._roomType, roomSize).subscribe(
         data => {
@@ -175,8 +187,8 @@ export class BookingsFormComponent implements OnInit {
         this.existingBooking.checkinTime,
         new Date(this.existingBooking.checkoutDate),
         this.existingBooking.checkoutTime,
-        this.existingBooking.roomType,
-        this.existingBooking.roomSize,
+        this._roomType,
+        this._roomSize,
         this.existingBooking.bookingId).subscribe(
           data => {
             this.roomNumbers = data
@@ -193,10 +205,10 @@ export class BookingsFormComponent implements OnInit {
   onSubmit() {
     //console.log(this.reservationForm.value);
     if (this.existingBookingId) {
-      this.bookingDataService.updateData(this.reservationForm.getRawValue()).subscribe(data =>{})
+      this.bookingDataService.updateData(this.reservationForm.getRawValue()).subscribe(data => { })
     } else {
-      this.bookingDataService.saveData(this.reservationForm.getRawValue()).subscribe(data =>{
-        console.log("Saved id ",data)
+      this.bookingDataService.saveData(this.reservationForm.getRawValue()).subscribe(data => {
+        console.log("Saved id ", data)
       })
     }
   }

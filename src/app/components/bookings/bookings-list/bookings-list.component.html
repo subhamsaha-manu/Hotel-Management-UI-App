@@ -15,6 +15,7 @@
     [getRowNodeId]="getRowNodeId"
     (gridReady)="onGridReady($event)"
     (rowClicked)='onRowClicked($event)'
+    [getRowStyle]="getRowStyle"
     [modules]="modules">
 </ag-grid-angular>
 <button style="float:right;margin-top:5px" mat-raised-button color="warn" (click)="checkInCheckOutHandler()">CheckIn/CheckOut</button>

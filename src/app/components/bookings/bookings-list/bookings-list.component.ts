@@ -6,6 +6,12 @@ import { BookingsFormComponent } from '../bookings-form/bookings-form.component'
 import { Router } from '@angular/router';
 import { UpdateButtonComponent } from '../../update-button/update-button.component';
 import { MatDialog } from '@angular/material/dialog';
+import {
+  MatSnackBar,
+  MatSnackBarHorizontalPosition,
+  MatSnackBarVerticalPosition,
+} from '@angular/material/snack-bar';
+
 import { CheckinCheckoutHandlerComponent } from '../checkin-checkout-handler/checkin-checkout-handler.component';
 @Component({
   selector: 'app-bookings-list',
@@ -13,6 +19,9 @@ import { CheckinCheckoutHandlerComponent } from '../checkin-checkout-handler/che
   styleUrls: ['./bookings-list.component.css']
 })
 export class BookingsListComponent implements OnInit {
+
+  horizontalPosition: MatSnackBarHorizontalPosition = 'center';
+  verticalPosition: MatSnackBarVerticalPosition = 'bottom';
 
   modules = [ClientSideRowModelModule];
   public paginationPageSize;
@@ -26,7 +35,8 @@ export class BookingsListComponent implements OnInit {
   public getRowNodeId;
 
   rowData: Booking[];
-  constructor(public dialog: MatDialog,private bookingDataService: BookingsDataService,private router: Router) {
+  public rowClassRules;
+  constructor(private _snackBar: MatSnackBar,public dialog: MatDialog,private bookingDataService: BookingsDataService,private router: Router) {
 
     this.getRowNodeId = function (data) {
       return data.bookingId;
@@ -38,7 +48,8 @@ export class BookingsListComponent implements OnInit {
     this.frameworkComponents = {
       btnCellRenderer: UpdateButtonComponent
     };
-   }
+
+ }
 
   ngOnInit(): void {
     this.bookingDataService.fetchData()
@@ -46,11 +57,6 @@ export class BookingsListComponent implements OnInit {
 
   columnDefs = [
     { headerName:'',field:'',checkboxSelection:true,width:50},
-    { headerName: 'BookingId', field: 'bookingId',width:100},
-    { headerName: 'Guest Name', field: 'guestName'},
-    { headerName: 'CheckIn', field: 'checkinDate' },
-    { headerName: 'CheckOut', field: 'checkoutDate' },
-    { headerName: 'Full Payment Done', field: 'fullPaymentDoneStr' },
     {
       headerName: 'Update',
       cellRenderer: 'btnCellRenderer',
@@ -59,8 +65,25 @@ export class BookingsListComponent implements OnInit {
         }
       },
       width:100
-    }
+    },
+    { headerName: 'BookingId', field: 'bookingId',width:100},    
+    { headerName: 'Guest Name', field: 'guestName'},
+    { headerName: 'CheckIn', field: 'checkinDate' },
+    { headerName: 'CheckOut', field: 'checkoutDate' },
+    { headerName: 'Full Payment Done', field: 'fullPaymentDone' }    
   ];
+
+  getRowStyle(params) {
+    if (params.data.fullPaymentDone === true) {
+        return {'background-color': '#CCFFCC'}
+    }else if(params.data.fullPaymentDone === false){
+      return {'background-color': '#FF9999'};
+    }else if(params.data.bookingStatus === 'CANCEL'){
+      return {'background-color': '#E0E0E0'}
+    }
+      
+    
+}
 
   onGridReady(params) {
     this.gridApi = params.api;
@@ -76,10 +99,23 @@ export class BookingsListComponent implements OnInit {
 
   checkInCheckOutHandler(){
     var selectedRow = this.gridApi.getSelectedRows();
-    console.log(selectedRow[0].bookingId)
+    if(selectedRow.length == 0){
+      this._snackBar.open('Need to select atleast a row', '', {
+        duration: 1000,
+        horizontalPosition: this.horizontalPosition,
+        verticalPosition: this.verticalPosition,
+      });
+    }
     if(selectedRow.length == 1){
       this.dialog.open(CheckinCheckoutHandlerComponent,{
         data: {bookingId:selectedRow[0].bookingId}
+      });
+    }
+    if(selectedRow.length > 1){
+      this._snackBar.open('Select only one row', '', {
+        duration: 1000,
+        horizontalPosition: this.horizontalPosition,
+        verticalPosition: this.verticalPosition,
       });
     }
   }

@@ -1,11 +1,11 @@
 <h2 mat-dialog-title>Modify Checkin/Checkout</h2>
 <mat-dialog-content class="mat-typography">
     <form [formGroup]="bookingCheckInCheckOutForm" (ngSubmit)="onSubmit()">
-        <mat-form-field appearance="outline" style="margin-right: 5px;">
+        <mat-form-field appearance="fill" style="margin-right: 5px;">
             <mat-label for="bookingId">Booking Id</mat-label>
             <input matInput formControlName="bookingId" readonly>
         </mat-form-field>
-        <mat-form-field appearance="outline">
+        <mat-form-field appearance="fill">
             <mat-label for="guestName">Guest Name</mat-label>
             <input matInput formControlName="guestName" readonly>
         </mat-form-field>
