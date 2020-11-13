@@ -1,5 +1,5 @@
 import { Component, EventEmitter, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { BookingsDataService } from 'src/app/core/services/bookings-data.service';
@@ -13,9 +13,6 @@ import {
   MatSnackBarVerticalPosition,
 } from '@angular/material/snack-bar';
 
-
-let emailRegex = "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$";
-
 @Component({
   selector: 'app-bookings-form',
   templateUrl: './bookings-form.component.html',
@@ -27,6 +24,7 @@ export class BookingsFormComponent implements OnInit {
   verticalPosition: MatSnackBarVerticalPosition = 'bottom';
 
   @ViewChild('checkOutDP') checkOutDP;
+  submitted: boolean = false;
   reservationForm: FormGroup;
   roomTypes: {};
   roomSizes: {};
@@ -40,7 +38,7 @@ export class BookingsFormComponent implements OnInit {
   private _checkoutTime: string;
   private _roomType: string;
   private _roomSize: string;
-  constructor(private _snackBar: MatSnackBar,private dataService: RefDataService, private bookingDataService: BookingsDataService, private route: ActivatedRoute) { }
+  constructor(private _snackBar: MatSnackBar, private dataService: RefDataService, private bookingDataService: BookingsDataService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
 
@@ -52,7 +50,7 @@ export class BookingsFormComponent implements OnInit {
 
 
     this.reservationForm = new FormGroup({
-      firstName: new FormControl(''),
+      firstName: new FormControl('',Validators.required),
       middleName: new FormControl(''),
       lastName: new FormControl(''),
       guestName: new FormControl(''),
@@ -71,18 +69,19 @@ export class BookingsFormComponent implements OnInit {
       paymentAmount: new FormControl(''),
       checkinDate: new FormControl({ value: '', disabled: true }),
       checkinTime: new FormControl({ value: '', disabled: true }),
-      checkoutDate: new FormControl({ value: '', disabled: true }),
+      checkoutDate: new FormControl({ value: '', disabled: true },this.dateLessThan('checkinDate','checkoutDate')),
       checkoutTime: new FormControl({ value: '', disabled: true }),
       roomType: new FormControl({ value: '', disabled: true }),
       roomSize: new FormControl({ value: '', disabled: true }),
       roomNumber: new FormControl({ value: '', disabled: true }),
       bookingStatus: new FormControl({ value: '', disabled: true }),
-      checkinDone: new FormControl({value:"false",disabled:true}),
+      checkinDone: new FormControl({ value: "false", disabled: true }),
       checkoutDone: new FormControl(''),
       bookingId: new FormControl('')
     });
     if (this.existingBookingId) {
       this.existingBooking = this.bookingDataService.bookings.find(data => data.bookingId === this.existingBookingId)
+      console.log("Existing Booking ", this.existingBooking)
       this.dataService.roomTypes(new Date(this.existingBooking.checkinDate),
         this.existingBooking.checkinTime,
         new Date(this.existingBooking.checkoutDate),
@@ -116,7 +115,26 @@ export class BookingsFormComponent implements OnInit {
         fullPaymentDone: this.existingBooking.fullPaymentDone + ""
       })
       this.reservationForm.get('roomType').enable()
+      this.reservationForm.get('checkinDone').enable()
+    }
+  }
 
+  public hasError = (controlName: string, errorName: string) =>{
+    return this.reservationForm.controls[controlName].hasError(errorName);
+  }
+
+  dateLessThan(from: string, to: string){
+    console.log('Here')
+    return (group: FormGroup): {[key: string]: any} => {
+      let f = group.controls[from];
+      let t = group.controls[to];
+      console.log("chk "+f+" "+t)
+      if (f.value < t.value) {
+        return {
+          dates: "Date from should be less than Date to"
+        };
+      }
+      return {};
     }
   }
 
@@ -204,11 +222,23 @@ export class BookingsFormComponent implements OnInit {
 
   onSubmit() {
     //console.log(this.reservationForm.value);
-    if (this.existingBookingId) {
-      this.bookingDataService.updateData(this.reservationForm.getRawValue()).subscribe(data => { })
-    } else {
+    this.submitted = true;
+    if (this.existingBookingId && this.reservationForm.valid) {
+      this.bookingDataService.updateData(this.reservationForm.getRawValue()).subscribe(data => {
+        this._snackBar.open('Updated successfully,with booking id - ', data, {
+          duration: 1000,
+          horizontalPosition: this.horizontalPosition,
+          verticalPosition: this.verticalPosition,
+        });
+      })
+    } else if (this.reservationForm.valid) {
       this.bookingDataService.saveData(this.reservationForm.getRawValue()).subscribe(data => {
-        console.log("Saved id ", data)
+        this._snackBar.open('Saved successfully,with booking id - ', data, {
+          duration: 1000,
+          horizontalPosition: this.horizontalPosition,
+          verticalPosition: this.verticalPosition,
+        });
+        console.log("Saved id ", data);
       })
     }
   }

@@ -1,4 +1,4 @@
-<div fxFlex="1 1 auto" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="center none" fxLayoutAlign.xs="none none"
+<div flex="1 1 auto" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="center none" fxLayoutAlign.xs="none none"
   class="formContainer">
   <mat-card class="reservation-form-card">
     <mat-card-header style="background-color: beige;padding-top: 10px;">
@@ -6,9 +6,8 @@
       <mat-card-subtitle>Reservation Form</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
-      <form [formGroup]="reservationForm" (ngSubmit)="onSubmit()" class="reservation-form">
-        <fieldset fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between none"
-          class="form-group">
+      <form [formGroup]="reservationForm" novalidate (ngSubmit)="onSubmit()" class="reservation-form">
+        <fieldset fxLayout="column wrap" fxLayout.xs="column" fxLayoutAlign="space-between none" class="form-group">
           <mat-form-field appearance="fill">
             <mat-label for="bookingId">Booking Id</mat-label>
             <input matInput formControlName="bookingId" readonly>
@@ -17,6 +16,7 @@
           <mat-form-field appearance="outline">
             <mat-label for="firstName">First Name</mat-label>
             <input matInput placeholder="First Name" formControlName="firstName">
+            <mat-error *ngIf="hasError('firstName', 'required')">First Name is required</mat-error>
           </mat-form-field>
           <mat-form-field appearance="outline">
             <mat-label for="middleName">Middle Name</mat-label>
@@ -87,37 +87,42 @@
           </mat-form-field>
           <mat-label>Payment Status</mat-label>
           <mat-radio-group aria-label="Select an option" formControlName="fullPaymentDone">
-             <mat-radio-button value="false">PENDING</mat-radio-button>
-             <mat-radio-button value="true">COMPLETE</mat-radio-button>
-          </mat-radio-group>   
+            <mat-radio-button value="false">PENDING</mat-radio-button>
+            <mat-radio-button value="true">COMPLETE</mat-radio-button>
+          </mat-radio-group>
           <mat-form-field appearance="outline">
             <mat-label for="paymentAmount">Payment Amount</mat-label>
             <input matInput placeholder="Payment" formControlName="paymentAmount">
-          </mat-form-field> 
+          </mat-form-field>
         </fieldset>
-        <fieldset fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between none" fxLayoutGap="2px"
-         class="form-group" style="padding-bottom: 15px;margin-bottom: -10px;">
+        <fieldset fxLayout="column wrap" fxLayout.xs="column" fxLayoutAlign="space-between none" fxLayoutGap="2px"
+          class="form-group" style="padding-bottom: 15px;margin-bottom: -10px;">
           <legend>Booking Info:</legend>
           <mat-form-field appearance="outline">
             <mat-label>Check-In Date</mat-label>
-            <input matInput [matDatepicker]="checkInDP" formControlName="checkinDate" (dateInput)="addCheckinDate('input', $event)">
+            <input matInput [matDatepicker]="checkInDP" formControlName="checkinDate"
+              (dateInput)="addCheckinDate('input', $event)">
             <mat-datepicker-toggle matSuffix [for]="checkInDP"></mat-datepicker-toggle>
             <mat-datepicker #checkInDP disabled="false"></mat-datepicker>
           </mat-form-field>
           <mat-form-field appearance="outline">
             <mat-label>Check-In Time 24hr Format</mat-label>
-            <input matInput placeholder="24hr format" aria-label="24hr format" [ngxTimepicker]="checkinTime" [format]="24" formControlName="checkinTime" readonly>
+            <input matInput placeholder="24hr format" aria-label="24hr format" [ngxTimepicker]="checkinTime"
+              [format]="24" formControlName="checkinTime" readonly>
             <ngx-material-timepicker #checkinTime (timeSet)="onSetCheckInTime($event)"></ngx-material-timepicker>
           </mat-form-field>
           <mat-form-field appearance="outline">
             <mat-label>Check-Out Date</mat-label>
-            <input matInput [matDatepicker]="checkOutDP" formControlName="checkoutDate" (dateInput)="addCheckoutDate('input', $event)">
+            <input matInput [matDatepicker]="checkOutDP" formControlName="checkoutDate"
+              (dateInput)="addCheckoutDate('input', $event)">
             <mat-datepicker-toggle matSuffix [for]="checkOutDP"></mat-datepicker-toggle>
             <mat-datepicker #checkOutDP disabled="true"></mat-datepicker>
+            <mat-error *ngIf="hasError('checkoutDate', 'required')">First Name is required</mat-error>
           </mat-form-field>
           <mat-form-field appearance="outline">
             <mat-label>Check-Out Time 24hr Format</mat-label>
-            <input matInput placeholder="24hr format" aria-label="24hr format" [ngxTimepicker]="checkoutTime" [format]="24" formControlName="checkoutTime" readonly>
+            <input matInput placeholder="24hr format" aria-label="24hr format" [ngxTimepicker]="checkoutTime"
+              [format]="24" formControlName="checkoutTime" readonly>
             <ngx-material-timepicker #checkoutTime (timeSet)="onSetCheckOutTime($event)"></ngx-material-timepicker>
           </mat-form-field>
           <mat-form-field appearance="outline">
@@ -146,19 +151,19 @@
           </mat-form-field>
           <mat-radio-group aria-label="Select an option" formControlName="bookingStatus" type="hidden">
           </mat-radio-group>
-          <mat-label>Checkin Done ?</mat-label> 
+          <mat-label>Checkin Done ?</mat-label>
           <mat-radio-group aria-label="Select an option" formControlName="checkinDone">
             <mat-radio-button value="true">Yes</mat-radio-button>
             <mat-radio-button value="false">No</mat-radio-button>
           </mat-radio-group>
           <mat-radio-group aria-label="Select an option" formControlName="checkoutDone" type="hidden">
-         </mat-radio-group>  
+          </mat-radio-group>
         </fieldset>
         <div style="float: right;margin-top: 20px;">
           <button mat-raised-button color="warn" type="reset" (click)="onReset()">Reset</button>
-          <button mat-raised-button color="primary" style="margin-left: 5px;">Submit</button>
+          <button mat-raised-button color="primary" [disabled]="!reservationForm.valid" style="margin-left: 5px;">Submit</button>
         </div>
-        </form>
-    </mat-card-content>    
+      </form>
+    </mat-card-content>
   </mat-card>
 </div>

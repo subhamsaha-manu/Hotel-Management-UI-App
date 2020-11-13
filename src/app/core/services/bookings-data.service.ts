@@ -62,7 +62,8 @@ export class BookingsDataService {
         data.checkinTime = data.checkinTime.substring(0,data.checkinTime.length-3)
         data.checkoutTime = data.checkoutTime.substring(0,data.checkoutTime.length-3)
       })
-      this.bookings = response
+      this.bookings = response;
+      console.log("List after fetchData() ",this.bookings)
     })
   }
 

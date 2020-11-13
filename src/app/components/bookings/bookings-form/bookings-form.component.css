@@ -11,6 +11,8 @@
 .mat-form-field-appearance-outline .mat-form-field-outline {
   color: black;
 }
+
+
 /* Font color */
 input.mat-input-element {
   color: black;
@@ -22,7 +24,7 @@ input.mat-input-element {
 
 .form-group{
   border: 5px solid black;
-  padding:20px 20px 0px 10px;
+  padding:10px 0px 0px 10px;
   margin-bottom: 15px;
 }
 
