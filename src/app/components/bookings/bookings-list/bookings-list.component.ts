@@ -5,22 +5,15 @@ import { ClientSideRowModelModule } from '@ag-grid-community/client-side-row-mod
 import { Router } from '@angular/router';
 import { UpdateButtonComponent } from '../../update-button/update-button.component';
 import { MatDialog } from '@angular/material/dialog';
-import {
-  MatSnackBar,
-  MatSnackBarHorizontalPosition,
-  MatSnackBarVerticalPosition,
-} from '@angular/material/snack-bar';
 
 import { CheckinCheckoutHandlerComponent } from '../checkin-checkout-handler/checkin-checkout-handler.component';
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-bookings-list',
   templateUrl: './bookings-list.component.html',
   styleUrls: ['./bookings-list.component.css']
 })
 export class BookingsListComponent implements OnInit {
-
-  horizontalPosition: MatSnackBarHorizontalPosition = 'center';
-  verticalPosition: MatSnackBarVerticalPosition = 'bottom';
 
   modules = [ClientSideRowModelModule];
   public paginationPageSize;
@@ -35,7 +28,7 @@ export class BookingsListComponent implements OnInit {
 
   rowData: Booking[];
   public rowClassRules;
-  constructor(private _snackBar: MatSnackBar, public dialog: MatDialog, private bookingDataService: BookingsDataService, private router: Router) {
+  constructor(public dialog: MatDialog, private bookingDataService: BookingsDataService, private router: Router) {
 
     this.getRowNodeId = function (data) {
       return data.bookingId;
@@ -96,11 +89,7 @@ export class BookingsListComponent implements OnInit {
   onRowClicked(event) {
     console.log('row', event.data);
     if (event.data.bookingStatus === 'CANCEL') {
-      this._snackBar.open('Cannot modify cancelled booking', '!!', {
-        duration: 1000,
-        horizontalPosition: this.horizontalPosition,
-        verticalPosition: this.verticalPosition,
-      });
+      Swal.fire('Warning!!','Cannot modify cancelled booking','warning')
     } else {
       new NgZone({}).run(() => this.router.navigateByUrl('/bookings/edit/' + event.data.bookingId));
     }
@@ -109,18 +98,10 @@ export class BookingsListComponent implements OnInit {
   checkInCheckOutHandler() {
     var selectedRow = this.gridApi.getSelectedRows();
     if (selectedRow[0].bookingStatus === 'CANCEL') {
-      this._snackBar.open('Cannot modify cancelled booking', '!!', {
-        duration: 1000,
-        horizontalPosition: this.horizontalPosition,
-        verticalPosition: this.verticalPosition,
-      });
+      Swal.fire('Warning','Cannot modify cancelled booking','warning')
     } else {
       if (selectedRow.length == 0) {
-        this._snackBar.open('Need to select atleast a row', '', {
-          duration: 1000,
-          horizontalPosition: this.horizontalPosition,
-          verticalPosition: this.verticalPosition,
-        });
+        Swal.fire('Info','Need to select atleast a row','info')
       }
       if (selectedRow.length == 1) {
         this.dialog.open(CheckinCheckoutHandlerComponent, {
@@ -128,11 +109,7 @@ export class BookingsListComponent implements OnInit {
         });
       }
       if (selectedRow.length > 1) {
-        this._snackBar.open('Select only one row', '', {
-          duration: 1000,
-          horizontalPosition: this.horizontalPosition,
-          verticalPosition: this.verticalPosition,
-        });
+        Swal.fire('Info','Select only one row','info')
       }
     }
   }

@@ -160,8 +160,16 @@
           </mat-radio-group>
         </fieldset>
         <div style="float: right;margin-top: 20px;">
-          <button mat-raised-button color="warn" type="reset" (click)="onReset()">Reset</button>
-          <button mat-raised-button color="primary" [disabled]="!reservationForm.valid" style="margin-left: 5px;">Submit</button>
+          <ng-container *ngIf="checkOutStatus; then checkOutComplete; else checkOutIncomplete">
+          </ng-container>      
+          <ng-template #checkOutComplete>
+              <button mat-button mat-raised-button (click)="onClose()">Close</button>    
+          </ng-template>
+          <ng-template #checkOutIncomplete>
+            <button mat-raised-button color="warn" type="reset" (click)="onReset()">Reset</button>
+            <button mat-raised-button color="primary" [disabled]="!reservationForm.valid"
+              style="margin-left: 5px;">Submit</button>
+          </ng-template>          
         </div>
       </form>
     </mat-card-content>

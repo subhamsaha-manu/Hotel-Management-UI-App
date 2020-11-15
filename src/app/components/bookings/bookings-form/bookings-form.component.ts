@@ -1,17 +1,12 @@
 import { Component, EventEmitter, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-
+import { Location } from '@angular/common';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { BookingsDataService } from 'src/app/core/services/bookings-data.service';
 import { RefDataService } from 'src/app/core/services/ref-data.service';
 import { ActivatedRoute } from '@angular/router';
 import { Booking } from 'src/app/core/models/booking.model';
-
-import {
-  MatSnackBar,
-  MatSnackBarHorizontalPosition,
-  MatSnackBarVerticalPosition,
-} from '@angular/material/snack-bar';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-bookings-form',
@@ -19,9 +14,6 @@ import {
   styleUrls: ['./bookings-form.component.css']
 })
 export class BookingsFormComponent implements OnInit {
-
-  horizontalPosition: MatSnackBarHorizontalPosition = 'center';
-  verticalPosition: MatSnackBarVerticalPosition = 'bottom';
 
   @ViewChild('checkOutDP') checkOutDP;
   submitted: boolean = false;
@@ -31,6 +23,7 @@ export class BookingsFormComponent implements OnInit {
   roomNumbers: {};
   existingBookingId: string;
   existingBooking: Booking;
+  checkOutStatus: boolean;
 
   private _checkinDate: Date;
   private _checkinTime: string;
@@ -38,7 +31,8 @@ export class BookingsFormComponent implements OnInit {
   private _checkoutTime: string;
   private _roomType: string;
   private _roomSize: string;
-  constructor(private _snackBar: MatSnackBar, private dataService: RefDataService, private bookingDataService: BookingsDataService, private route: ActivatedRoute) { }
+  
+  constructor(private dataService: RefDataService, private bookingDataService: BookingsDataService, private route: ActivatedRoute, private location: Location) { }
 
   ngOnInit(): void {
 
@@ -50,7 +44,7 @@ export class BookingsFormComponent implements OnInit {
 
 
     this.reservationForm = new FormGroup({
-      firstName: new FormControl('',Validators.required),
+      firstName: new FormControl('', Validators.required),
       middleName: new FormControl(''),
       lastName: new FormControl(''),
       guestName: new FormControl(''),
@@ -69,18 +63,19 @@ export class BookingsFormComponent implements OnInit {
       paymentAmount: new FormControl(''),
       checkinDate: new FormControl({ value: '', disabled: true }),
       checkinTime: new FormControl({ value: '', disabled: true }),
-      checkoutDate: new FormControl({ value: '', disabled: true },this.dateLessThan('checkinDate','checkoutDate')),
+      checkoutDate: new FormControl({ value: '', disabled: true }, this.dateLessThan('checkinDate', 'checkoutDate')),
       checkoutTime: new FormControl({ value: '', disabled: true }),
       roomType: new FormControl({ value: '', disabled: true }),
       roomSize: new FormControl({ value: '', disabled: true }),
       roomNumber: new FormControl({ value: '', disabled: true }),
       bookingStatus: new FormControl({ value: '', disabled: true }),
       checkinDone: new FormControl({ value: "false", disabled: true }),
-      checkoutDone: new FormControl(''),
+      checkoutDone: new FormControl("false"),
       bookingId: new FormControl('')
     });
     if (this.existingBookingId) {
       this.existingBooking = this.bookingDataService.bookings.find(data => data.bookingId === this.existingBookingId)
+      this.checkOutStatus = this.existingBooking.checkoutDone
       console.log("Existing Booking ", this.existingBooking)
       this.dataService.roomTypes(new Date(this.existingBooking.checkinDate),
         this.existingBooking.checkinTime,
@@ -116,19 +111,22 @@ export class BookingsFormComponent implements OnInit {
       })
       this.reservationForm.get('roomType').enable()
       this.reservationForm.get('checkinDone').enable()
+      if(this.checkOutStatus){
+       this.reservationForm.disable(); 
+      }
     }
   }
 
-  public hasError = (controlName: string, errorName: string) =>{
+  public hasError = (controlName: string, errorName: string) => {
     return this.reservationForm.controls[controlName].hasError(errorName);
   }
 
-  dateLessThan(from: string, to: string){
+  dateLessThan(from: string, to: string) {
     console.log('Here')
-    return (group: FormGroup): {[key: string]: any} => {
+    return (group: FormGroup): { [key: string]: any } => {
       let f = group.controls[from];
       let t = group.controls[to];
-      console.log("chk "+f+" "+t)
+      console.log("chk " + f + " " + t)
       if (f.value < t.value) {
         return {
           dates: "Date from should be less than Date to"
@@ -225,25 +223,22 @@ export class BookingsFormComponent implements OnInit {
     this.submitted = true;
     if (this.existingBookingId && this.reservationForm.valid) {
       this.bookingDataService.updateData(this.reservationForm.getRawValue()).subscribe(data => {
-        this._snackBar.open('Updated successfully,with booking id - ', data, {
-          duration: 1000,
-          horizontalPosition: this.horizontalPosition,
-          verticalPosition: this.verticalPosition,
+        Swal.fire('Booking with :- ' + data, 'Updated succesfully!!', 'success').then(() => {
+          this.location.back();
         });
-      })
+      });
     } else if (this.reservationForm.valid) {
       this.bookingDataService.saveData(this.reservationForm.getRawValue()).subscribe(data => {
-        this._snackBar.open('Saved successfully,with booking id - ', data, {
-          duration: 1000,
-          horizontalPosition: this.horizontalPosition,
-          verticalPosition: this.verticalPosition,
-        });
-        console.log("Saved id ", data);
-      })
+        this.location.back();
+      });
     }
   }
 
   onReset() {
     this.reservationForm.reset();
+  }
+
+  onClose(){
+    this.location.back();
   }
 }

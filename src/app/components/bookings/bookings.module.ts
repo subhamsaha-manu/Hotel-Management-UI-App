@@ -12,8 +12,16 @@ import { AgGridModule} from "@ag-grid-community/angular";
 import { UpdateButtonComponent } from '../update-button/update-button.component';
 import { CheckinCheckoutHandlerComponent } from './checkin-checkout-handler/checkin-checkout-handler.component';
 
+
+
 @NgModule({
-  declarations: [ BookingsFormComponent, BookingsListComponent, BookingsDetailComponent,UpdateButtonComponent, CheckinCheckoutHandlerComponent],
+  declarations: [ 
+    BookingsFormComponent, 
+    BookingsListComponent, 
+    BookingsDetailComponent,
+    UpdateButtonComponent, 
+    CheckinCheckoutHandlerComponent
+  ],
   imports: [
     RouterModule.forChild(routes),
     SharedModule,
@@ -22,6 +30,10 @@ import { CheckinCheckoutHandlerComponent } from './checkin-checkout-handler/chec
     NgxMaterialTimepickerModule
   ],
   exports:[
+    CheckinCheckoutHandlerComponent
+  ],
+  entryComponents:[
+    CheckinCheckoutHandlerComponent
   ]
 })
 export class BookingsModule { 

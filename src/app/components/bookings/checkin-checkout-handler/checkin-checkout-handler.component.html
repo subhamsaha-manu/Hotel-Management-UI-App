@@ -28,7 +28,16 @@
     </form>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
-    <button mat-button mat-dialog-close>Cancel</button>
-    <button mat-button [mat-dialog-close]="true" [disabled]="!bookingCheckInCheckOutForm.valid" type="submit"
-        (click)="onSubmit()">Submit</button>
+    <ng-container *ngIf="checkInStatus && checkOutStatus; then checkInOutComplete; else checkInOutIncomplete">
+    </ng-container>
+
+    <ng-template #checkInOutComplete>
+        <button mat-button mat-raised-button [mat-dialog-close]="true">Close</button>    
+    </ng-template>
+    <ng-template #checkInOutIncomplete>
+        <button mat-button mat-raised-button mat-dialog-close>Cancel</button>
+        <button mat-button mat-raised-button [mat-dialog-close]="true" [disabled]="!bookingCheckInCheckOutForm.valid" type="submit"
+        (click)="onSubmit()" color="primary">Submit</button>
+    </ng-template>
+
 </mat-dialog-actions>
