@@ -98,26 +98,27 @@
         <fieldset fxLayout="column wrap" fxLayout.xs="column" fxLayoutAlign="space-between none" fxLayoutGap="2px"
           class="form-group" style="padding-bottom: 15px;margin-bottom: -10px;">
           <legend>Booking Info:</legend>
-          <mat-form-field appearance="outline">
-            <mat-label>Check-In Date</mat-label>
-            <input matInput [matDatepicker]="checkInDP" formControlName="checkinDate"
-              (dateInput)="addCheckinDate('input', $event)">
-            <mat-datepicker-toggle matSuffix [for]="checkInDP"></mat-datepicker-toggle>
-            <mat-datepicker #checkInDP disabled="false"></mat-datepicker>
+          <mat-form-field appearance="fill">
+            <mat-label>Enter a date range</mat-label>
+            <mat-date-range-input [rangePicker]="picker">
+              <input matStartDate formControlName="checkinDate" placeholder="Check-In Date" disabled>
+              <input matEndDate formControlName="checkoutDate" 
+              (dateInput)="addCheckoutDate('input', $event)"
+              placeholder="Check-Out Date" disabled>
+            </mat-date-range-input>
+            <mat-datepicker-toggle matSuffix [for]="picker">
+            </mat-datepicker-toggle>
+            <mat-date-range-picker #picker disabled="false"></mat-date-range-picker>
+            <mat-error *ngIf="reservationForm.get('checkinDate').hasError('matStartDateInvalid')">Invalid start date
+            </mat-error>
+            <mat-error *ngIf="reservationForm.get('checkoutDate').hasError('matEndDateInvalid')">Invalid end date
+            </mat-error>
           </mat-form-field>
           <mat-form-field appearance="outline">
             <mat-label>Check-In Time 24hr Format</mat-label>
             <input matInput placeholder="24hr format" aria-label="24hr format" [ngxTimepicker]="checkinTime"
               [format]="24" formControlName="checkinTime" readonly>
-            <ngx-material-timepicker #checkinTime (timeSet)="onSetCheckInTime($event)"></ngx-material-timepicker>
-          </mat-form-field>
-          <mat-form-field appearance="outline">
-            <mat-label>Check-Out Date</mat-label>
-            <input matInput [matDatepicker]="checkOutDP" formControlName="checkoutDate"
-              (dateInput)="addCheckoutDate('input', $event)">
-            <mat-datepicker-toggle matSuffix [for]="checkOutDP"></mat-datepicker-toggle>
-            <mat-datepicker #checkOutDP disabled="true"></mat-datepicker>
-            <mat-error *ngIf="hasError('checkoutDate', 'required')">First Name is required</mat-error>
+            <ngx-material-timepicker #checkinTime></ngx-material-timepicker>
           </mat-form-field>
           <mat-form-field appearance="outline">
             <mat-label>Check-Out Time 24hr Format</mat-label>
@@ -161,15 +162,15 @@
         </fieldset>
         <div style="float: right;margin-top: 20px;">
           <ng-container *ngIf="checkOutStatus; then checkOutComplete; else checkOutIncomplete">
-          </ng-container>      
+          </ng-container>
           <ng-template #checkOutComplete>
-              <button mat-button mat-raised-button (click)="onClose()">Close</button>    
+            <button mat-button mat-raised-button (click)="onClose()">Close</button>
           </ng-template>
           <ng-template #checkOutIncomplete>
             <button mat-raised-button color="warn" type="reset" (click)="onReset()">Reset</button>
             <button mat-raised-button color="primary" [disabled]="!reservationForm.valid"
               style="margin-left: 5px;">Submit</button>
-          </ng-template>          
+          </ng-template>
         </div>
       </form>
     </mat-card-content>

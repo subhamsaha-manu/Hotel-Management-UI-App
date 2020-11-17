@@ -31,6 +31,7 @@ export class BookingsDataService {
 
   updateData(bookingForm) {
     var url = this.baseUrl + "/update";
+    console.log("Update Data ",bookingForm)
     bookingForm.checkinDate = this.converDateFormat(new Date(bookingForm.checkinDate))
     bookingForm.checkinTime = bookingForm.checkinTime + ":00"
     bookingForm.checkoutDate = this.converDateFormat(new Date(bookingForm.checkoutDate))
@@ -71,7 +72,7 @@ export class BookingsDataService {
 
   private handleError(method: string, error: HttpErrorResponse) {
     if (error instanceof HttpErrorResponse) {
-      console.log(error.error)
+      //console.log(error.error)
       if (JSON.parse(error.error).code) {
         Swal.fire('Error', JSON.parse(error.error).message, 'info');
       } else {

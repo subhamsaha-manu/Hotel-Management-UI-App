@@ -61,10 +61,10 @@ export class BookingsFormComponent implements OnInit {
       child: new FormControl(''),
       fullPaymentDone: new FormControl(''),
       paymentAmount: new FormControl(''),
-      checkinDate: new FormControl({ value: '', disabled: true }),
-      checkinTime: new FormControl({ value: '', disabled: true }),
-      checkoutDate: new FormControl({ value: '', disabled: true }, this.dateLessThan('checkinDate', 'checkoutDate')),
-      checkoutTime: new FormControl({ value: '', disabled: true }),
+      checkinDate: new FormControl(),
+      checkoutDate: new FormControl(),
+      checkinTime: new FormControl({ value: '09:00', disabled: true }),
+      checkoutTime: new FormControl({ value: '10:00', disabled: true }),
       roomType: new FormControl({ value: '', disabled: true }),
       roomSize: new FormControl({ value: '', disabled: true }),
       roomNumber: new FormControl({ value: '', disabled: true }),
@@ -121,34 +121,8 @@ export class BookingsFormComponent implements OnInit {
     return this.reservationForm.controls[controlName].hasError(errorName);
   }
 
-  dateLessThan(from: string, to: string) {
-    console.log('Here')
-    return (group: FormGroup): { [key: string]: any } => {
-      let f = group.controls[from];
-      let t = group.controls[to];
-      console.log("chk " + f + " " + t)
-      if (f.value < t.value) {
-        return {
-          dates: "Date from should be less than Date to"
-        };
-      }
-      return {};
-    }
-  }
-
-  addCheckinDate(type: string, event: MatDatepickerInputEvent<Date>) {
-    //console.log(`${type}: ${event.value}`)
-    //console.log(this.reservationForm.get('bookingDetails.checkin').value.getHours())
-    //console.log(this.checkOutDP)
-    this.reservationForm.get('checkinTime').enable()
-  }
-
-  onSetCheckInTime(event: EventEmitter<string>) {
-    this.checkOutDP.disabled = false
-    console.log("Checkin Date set ", event)
-  }
-
   addCheckoutDate(type: string, event: MatDatepickerInputEvent<Date>) {
+    this.reservationForm.get('checkinTime').enable()
     this.reservationForm.get('checkoutTime').enable()
   }
 
@@ -228,8 +202,9 @@ export class BookingsFormComponent implements OnInit {
         });
       });
     } else if (this.reservationForm.valid) {
-      this.bookingDataService.saveData(this.reservationForm.getRawValue()).subscribe(data => {
+      this.bookingDataService.saveData(this.reservationForm.getRawValue()).subscribe(data => {Swal.fire('Booking with :- ' + data, 'added succesfully!!', 'success').then(() => {
         this.location.back();
+      });
       });
     }
   }

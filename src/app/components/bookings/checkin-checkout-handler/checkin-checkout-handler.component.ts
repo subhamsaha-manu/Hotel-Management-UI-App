@@ -30,7 +30,7 @@ export class CheckinCheckoutHandlerComponent{
 
     this.toBeUpdatedBooking = this.bookingDataService.bookings.find(ele => ele.bookingId === data.bookingId)
     //console.log("Checkout handler ", this.toBeUpdatedBooking)
-    console.log("Checkout value init ",this.bookingCheckInCheckOutForm.get('checkOutDone').value)
+    //console.log("Checkout value init ",this.bookingCheckInCheckOutForm.get('checkOutDone').value)
     this.bookingCheckInCheckOutForm.patchValue({
       bookingId: this.toBeUpdatedBooking.bookingId,
       guestName: this.toBeUpdatedBooking.guestName,
@@ -58,7 +58,10 @@ export class CheckinCheckoutHandlerComponent{
       this.toBeUpdatedBooking.checkinDone = this.bookingCheckInCheckOutForm.get('checkinDone').value
       this.toBeUpdatedBooking.checkoutDone = this.bookingCheckInCheckOutForm.get('checkOutDone').value
       this.bookingDataService.updateData(this.toBeUpdatedBooking).subscribe(data => {
-        Swal.fire('Success!!', 'Booking record ' + data + ' modified successfully', 'success').then(()=>this.dialogRef.close())        
+        Swal.fire('Success!!', 'Booking record ' + data + ' modified successfully', 'success').then(()=>{
+          this.bookingDataService.fetchData();
+          this.dialogRef.close();
+        })        
       })
     }
   }

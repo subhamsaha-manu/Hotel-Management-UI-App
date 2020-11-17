@@ -1,5 +1,5 @@
 <ag-grid-angular
-    style="width: 100%;"
+    style="margin: auto; width: 65.2%;"
     class="ag-theme-balham"
     [rowData]="rowData"
     [columnDefs]="columnDefs"
@@ -18,5 +18,30 @@
     [getRowStyle]="getRowStyle"
     [modules]="modules">
 </ag-grid-angular>
-<button style="float:right;margin-top:5px" mat-raised-button color="warn" (click)="checkInCheckOutHandler()">CheckIn/CheckOut</button>
-<button mat-raised-button color="primary" style="float:right;margin-top:5px;margin-right: 5px;" (click)="makeNewBooking()">New Booking</button>
+<div style="margin: auto;margin-top: 5px; width: 65.2%" fxLayout="row" fxLayoutGap="177px">
+    <div style="width: 400px;height: 40px;" fxLayout="row" fxLayoutGap="5px" fxLayoutAlign="space-between center">
+        <div fxLayout="row" fxLayoutGap="5px">
+            <svg width="20" height="16">
+                <rect width="15" height="15" style="fill:#E0E0E0;stroke-width:1;stroke:rgb(0,0,0)" />
+            </svg>
+            <p>Cancelled</p>
+        </div>
+        <div fxLayout="row" fxLayoutGap="5px">
+            <svg width="20" height="16">
+                <rect width="15" height="15" style="fill:#FF9999;stroke-width:1;stroke:rgb(0,0,0)" />
+            </svg>
+            <p>Payment Pending</p>
+        </div>
+        <div fxLayout="row" fxLayoutGap="5px">
+            <svg width="20" height="16">
+                <rect width="15" height="15" style="fill:#CCFFCC;stroke-width:1;stroke:rgb(0,0,0)" />
+            </svg>
+            <p>Payment Done</p>
+        </div>
+    </div>
+    <div fxLayout="row" fxLayoutGap="10px">
+        <button mat-raised-button color="primary" (click)="makeNewBooking()">New Booking</button>
+        <button mat-raised-button color="warn" (click)="checkInCheckOutHandler()">CheckIn/CheckOut</button>
+    </div>
+    
+</div>

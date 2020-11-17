@@ -40,12 +40,12 @@ export class BookingsListComponent implements OnInit {
     this.frameworkComponents = {
       btnCellRenderer: UpdateButtonComponent
     };
-    console.log("Called const");
+    //console.log("Called const");
   }
 
   ngOnInit(): void {
     this.bookingDataService.fetchData()
-    console.log("Called onInit");
+    //console.log("Called onInit");
   }
 
   columnDefs = [
@@ -81,15 +81,15 @@ export class BookingsListComponent implements OnInit {
     setTimeout(() => {
       this.gridApi = params.api;
       this.gridColumnApi = params.columnApi;
-      console.log("On grid ready ", this.bookingDataService.bookings)
-      this.rowData = this.bookingDataService.bookings;  
-    }, 100);    
+      //console.log("On grid ready ", this.bookingDataService.bookings)
+      this.rowData = this.bookingDataService.bookings;
+    }, 100);
     //this.renderTable();   
   }
   onRowClicked(event) {
-    console.log('row', event.data);
+    //console.log('row', event.data);
     if (event.data.bookingStatus === 'CANCEL') {
-      Swal.fire('Warning!!','Cannot modify cancelled booking','warning')
+      Swal.fire('Warning!!', 'Cannot modify cancelled booking', 'warning')
     } else {
       new NgZone({}).run(() => this.router.navigateByUrl('/bookings/edit/' + event.data.bookingId));
     }
@@ -97,19 +97,18 @@ export class BookingsListComponent implements OnInit {
 
   checkInCheckOutHandler() {
     var selectedRow = this.gridApi.getSelectedRows();
-    if (selectedRow[0].bookingStatus === 'CANCEL') {
-      Swal.fire('Warning','Cannot modify cancelled booking','warning')
+    if (selectedRow.length == 0) {
+      Swal.fire('Info', 'Need to select atleast a row', 'info')
+    }
+    else if (selectedRow.length > 1) {
+      Swal.fire('Info', 'Select only one row', 'info')
     } else {
-      if (selectedRow.length == 0) {
-        Swal.fire('Info','Need to select atleast a row','info')
-      }
-      if (selectedRow.length == 1) {
+      if (selectedRow[0].bookingStatus === 'CANCEL') {
+        Swal.fire('Warning', 'Cannot modify cancelled booking', 'warning')
+      } else {
         this.dialog.open(CheckinCheckoutHandlerComponent, {
           data: { bookingId: selectedRow[0].bookingId }
         });
-      }
-      if (selectedRow.length > 1) {
-        Swal.fire('Info','Select only one row','info')
       }
     }
   }
