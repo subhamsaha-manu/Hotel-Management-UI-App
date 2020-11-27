@@ -1,47 +1,49 @@
-<ag-grid-angular
-    style="margin: auto; width: 65.2%;"
-    class="ag-theme-balham"
-    [rowData]="rowData"
-    [columnDefs]="columnDefs"
-    [defaultColDef]="defaultColDef"
-    [enableBrowserTooltips]="true"
-    [pagination]="true"
-    [paginationPageSize]="paginationPageSize"
-    [domLayout]="domLayout"
-    [frameworkComponents]="frameworkComponents"    
-    [tooltipShowDelay]="tooltipShowDelay"
-    [rowSelection]="rowSelection"
-    [animateRows]="true"
-    [getRowNodeId]="getRowNodeId"
-    (gridReady)="onGridReady($event)"
-    (rowClicked)='onRowClicked($event)'
-    [getRowStyle]="getRowStyle"
-    [modules]="modules">
-</ag-grid-angular>
-<div style="margin: auto;margin-top: 5px; width: 65.2%" fxLayout="row" fxLayoutGap="177px">
-    <div style="width: 400px;height: 40px;" fxLayout="row" fxLayoutGap="5px" fxLayoutAlign="space-between center">
-        <div fxLayout="row" fxLayoutGap="5px">
-            <svg width="20" height="16">
-                <rect width="15" height="15" style="fill:#E0E0E0;stroke-width:1;stroke:rgb(0,0,0)" />
-            </svg>
-            <p>Cancelled</p>
-        </div>
-        <div fxLayout="row" fxLayoutGap="5px">
-            <svg width="20" height="16">
-                <rect width="15" height="15" style="fill:#FF9999;stroke-width:1;stroke:rgb(0,0,0)" />
-            </svg>
-            <p>Payment Pending</p>
-        </div>
-        <div fxLayout="row" fxLayoutGap="5px">
-            <svg width="20" height="16">
-                <rect width="15" height="15" style="fill:#CCFFCC;stroke-width:1;stroke:rgb(0,0,0)" />
-            </svg>
-            <p>Payment Done</p>
-        </div>
+<!--Start of Root container for Bookings List component-->
+<div fxLayout="column" style="height: 100%;">
+    <!--Start of Ag grid container-->
+    <div class="grid-container">
+        <ag-grid-angular class="ag-theme-balham ag-grid" [rowData]="rowData" [columnDefs]="columnDefs"
+            [defaultColDef]="defaultColDef" [enableBrowserTooltips]="true" [pagination]="true"
+            [paginationPageSize]="paginationPageSize" [domLayout]="domLayout"
+            [frameworkComponents]="frameworkComponents" [tooltipShowDelay]="tooltipShowDelay"
+            [rowSelection]="rowSelection" [animateRows]="true" [getRowNodeId]="getRowNodeId"
+            (gridReady)="onGridReady($event)" (rowClicked)='onRowClicked($event)' [getRowStyle]="getRowStyle"
+            [modules]="modules" [groupHeaderHeight]="groupHeaderHeight" [headerHeight]="headerHeight" [rowHeight]="rowHeight"
+            (firstDataRendered)="onFirstDataRendered($event)">
+        </ag-grid-angular>
     </div>
-    <div fxLayout="row" fxLayoutGap="10px">
-        <button mat-raised-button color="primary" (click)="makeNewBooking()">New Booking</button>
-        <button mat-raised-button color="warn" (click)="checkInCheckOutHandler()">CheckIn/CheckOut</button>
+    <!--End of Ag grid container-->
+    <!--Start of Legends and buttons container-->
+    <div class="legendsButtonsContainer" fxLayout="row" fxLayoutAlign="space-between end">
+        <!--Start of Legends container-->
+        <div class="legends" fxLayout="row" fxLayoutGap="5px" fxLayoutAlign="space-between center">
+            <div fxLayout="row" fxLayoutGap="5px">
+                <svg width="20" height="16">
+                    <rect width="15" height="15" style="fill:#E0E0E0;stroke-width:1;stroke:rgb(0,0,0)" />
+                </svg>
+                <p>Cancelled</p>
+            </div>
+            <div fxLayout="row" fxLayoutGap="5px">
+                <svg width="20" height="16">
+                    <rect width="15" height="15" style="fill:#FF9999;stroke-width:1;stroke:rgb(0,0,0)" />
+                </svg>
+                <p>Payment Pending</p>
+            </div>
+            <div fxLayout="row" fxLayoutGap="5px">
+                <svg width="20" height="16">
+                    <rect width="15" height="15" style="fill:#CCFFCC;stroke-width:1;stroke:rgb(0,0,0)" />
+                </svg>
+                <p>Payment Done</p>
+            </div>
+        </div>
+        <!--End of Legends container-->
+        <!--Start of Buttons container-->
+        <div fxLayout="row" fxLayoutGap="10px">
+            <button mat-raised-button color="primary" (click)="makeNewBooking()">New Booking</button>
+            <button mat-raised-button color="warn" (click)="checkInCheckOutHandler()">CheckIn/CheckOut</button>
+        </div>
+        <!--End of Buttons container-->
     </div>
-    
+    <!--End of Legends and buttons container-->
 </div>
+<!--End of Root container for Bookings List component-->

@@ -1,12 +1,11 @@
 mat-sidenav {
-  width: 15%;
+  width: 12%;
+  border: 2px solid black;
 }
 
-.is-mobile-device > .sidenav {
-  width: 40%;
-}
 
 /* * Actual Sticky Footer Styles */
+
 .all-wrap {
   min-height: 100vh;
 }
@@ -15,6 +14,7 @@ mat-sidenav {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  border: 2px solid black;
 }
 
 .content {
@@ -24,6 +24,7 @@ mat-sidenav {
 }
 
 /* * Make the component injected by <router-outlet> full height: */
+
 main {
   display: flex;
   flex-direction: column;
@@ -35,19 +36,43 @@ main>*:not(router-outlet) {
 }
 
 h1.app-name {
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 800;
+  font-size: 42px;
   margin-left: 8px;
+  color: #ee2e24;
 }
 
+h1.app-name:hover {
+  cursor: pointer;
+}
 
 .router-link-active {
   background-color: gainsboro;
   color: black;
 }
 
-
-
+.toolbar{
+  border: 2px solid;
+}
 .is-mobile .toolbar {
   position: fixed;
   /* Make sure the toolbar will stay on top of the content as it scrolls past. */
   z-index: 2;
+}
+
+.link{
+  font-family: "Open Sans", sans-serif;
+  font-size: 20px !important;
+}
+
+@media only screen and (max-width: 600px) {
+  h1.app-name {
+    font-size: 30px;
+    margin-left: 8px;
+    color: #ee2e24;
+  }
+  .sidenav{
+    width: 50%;
+  }
 }

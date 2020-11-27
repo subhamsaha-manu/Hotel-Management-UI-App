@@ -1,5 +1,7 @@
 import { MediaMatcher } from '@angular/cdk/layout';
 import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import { Router } from '@angular/router';
+import { BookingsDataService } from './core/services/bookings-data.service';
 
 @Component({
   selector: 'app-root',
@@ -12,15 +14,21 @@ export class AppComponent implements OnDestroy,OnInit {
 
   private _mobileQueryListener: () => void;
 
-  constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher) {
+  constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher,private router:Router, private bookingDataService: BookingsDataService) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     //console.log("Mobile Query ",this.mobileQuery.matches)
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addEventListener('',this._mobileQueryListener);
   }
   ngOnInit(){
+    this.bookingDataService.fetchData();
   }
   ngOnDestroy(): void {
     this.mobileQuery.removeEventListener('',this._mobileQueryListener);
   }
+
+  navigateToHome(){
+    this.router.navigateByUrl('/');
+  }
+  
 }

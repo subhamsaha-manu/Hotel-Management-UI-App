@@ -1,0 +1,92 @@
+.grid-container {
+    margin: auto;
+    margin-top: 10px;
+    width: 98%;
+    height: 95%;
+    overflow: hidden;
+    flex-grow: 1
+}
+
+.ag-grid {
+    margin: auto;
+    margin-top: 10px;
+    width: 98%;
+    height: 95%;
+    border: 2px solid;
+    border-radius: 10px;
+    box-shadow: 2px 10px 8px 2px #888888;
+}
+
+.ag-theme-balham .ag-root-wrapper {
+    border-radius: 10px !important;
+}
+
+.legendsButtonsContainer {
+    margin: auto;
+    margin-top: 5px;
+    width: 96%;
+    padding: 8px;
+    border: 2px solid;
+    box-shadow: 2px 10px 8px 2px #888888;
+    background: rgb(249, 249, 251) none repeat scroll 0% 0%;
+}
+
+.legends {
+    width: 400px;
+    height: 40px;
+}
+
+.mat-raised-button {
+    box-shadow: 2px 3px 8px 2px #888;
+}
+
+::ng-deep .ag-cell-label-container {
+    /*Necessary to allow for text to grow vertically*/
+    height: 100%;
+}
+
+::ng-deep .ag-header-cell-label {
+    /*Necessary to allow for text to grow vertically*/
+    height: 100%;
+    padding: 0 !important;
+}
+
+::ng-deep .ag-theme-balham .ag-header-group-cell {
+    font-size: 50px;
+    justify-content: center;
+}
+
+::ng-deep .ag-header-group-text {
+    margin: auto !important;
+    font-family: "Open Sans", sans-serif;
+    font-size: 61px;
+    line-height: 1.1;
+}
+
+::ng-deep .ag-header-row-column-group {
+    background: rgb(249, 249, 251) none repeat scroll 0% 0%;
+    border-bottom: 2px solid;
+}
+
+::ng-deep .ag-header-row-column {
+    font-family: "Open Sans", sans-serif;
+    background-color: rgb(254, 246, 233);
+    text-transform: uppercase;
+}
+
+::ng-deep .ag-header-cell-text {
+    margin: auto;
+    color: black;
+    font-size: 18px;
+}
+
+::ng-deep .ag-row {
+    font-family: "Open Sans", sans-serif;
+    border-top: 0.5px solid !important;
+    border-bottom: 0.5px solid !important;
+}
+
+::ng-deep .ag-cell {
+    font-size: 15px !important;
+    line-height: 38px !important;
+}

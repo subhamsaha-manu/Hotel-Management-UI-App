@@ -1,0 +1,42 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
+@import "~ag-grid-community/dist/styles/ag-grid.css";
+@import "~ag-grid-community/dist/styles/ag-theme-balham.css";
+
+@import "~@angular/material/theming";
+
+$custom-typography: mat-typography-config(
+  $font-family: "Open Sans",
+);
+@include mat-core($custom-typography);
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: "Open Sans", sans-serif;
+  color: whitesmoke;
+}
+button {
+  font-family: "Open Sans", sans-serif;
+  cursor: pointer;
+}
+
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 5px;
+}
+
+th {
+  text-align: left;
+  background-color: rgb(254, 246, 233);
+  width: 20px;
+}

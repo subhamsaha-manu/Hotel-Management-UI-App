@@ -1,1 +1,76 @@
-<p>dashboard-home works!</p>
+<div class="dashboard-content" fxFlex="100" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between start" fxLayoutGap="20">
+    <mat-card class="card-element">
+        <mat-card-header class="card-header">
+            <mat-card-title>Guest Details</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <ag-charts-angular style="height: 100%" [options]="options"></ag-charts-angular>
+        </mat-card-content>
+    </mat-card>
+    <mat-card class="card-element">
+        <mat-card-header class="card-header">
+            <mat-card-title>Checkin Details</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <table style="width:100%">
+                <thead>
+                    <tr>     
+                        <th>Sl. No.</th>    
+                        <th>Booking Id</th>    
+                        <th>Guest Name</th>
+                        <th>Room Number</th>    
+                    </tr>    
+                </thead>
+                <tbody>
+                    <tr *ngFor="let guest of checkinGuestList; let i = index;">    
+                        <td>
+                            <span>{{i+1}}</span>
+                        </td>    
+                          <td>    
+                            <span>{{guest.id}}</span>
+                          </td>    
+                          <td>    
+                            <span>{{guest.guestName}}</span>
+                          </td>    
+                          <td>    
+                            <span>{{guest.roomNumber}}</span>
+                          </td> 
+                      </tr>   
+                </tbody>
+            </table>
+        </mat-card-content>
+    </mat-card>
+    <mat-card class="card-element">
+        <mat-card-header class="card-header">
+            <mat-card-title>CheckOut Details</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <table style="width:100%">
+                <thead>
+                    <tr>     
+                        <th>Sl. No.</th>    
+                        <th>Booking Id</th>    
+                        <th>Guest Name</th>
+                        <th>Room Number</th>    
+                    </tr>    
+                </thead>
+                <tbody>
+                    <tr *ngFor="let guest of checkoutGuestList; let i = index;">    
+                        <td>
+                            <span>{{i+1}}</span>
+                        </td>    
+                          <td>    
+                            <span>{{guest.id}}</span>
+                          </td>    
+                          <td>    
+                            <span>{{guest.guestName}}</span>
+                          </td>    
+                          <td>    
+                            <span>{{guest.roomNumber}}</span>
+                          </td> 
+                      </tr>   
+                </tbody>
+            </table>
+        </mat-card-content>
+    </mat-card>
+</div>

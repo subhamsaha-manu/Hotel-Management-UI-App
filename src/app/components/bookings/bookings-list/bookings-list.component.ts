@@ -13,7 +13,7 @@ import Swal from 'sweetalert2';
   templateUrl: './bookings-list.component.html',
   styleUrls: ['./bookings-list.component.css']
 })
-export class BookingsListComponent implements OnInit {
+export class BookingsListComponent {
 
   modules = [ClientSideRowModelModule];
   public paginationPageSize;
@@ -25,6 +25,9 @@ export class BookingsListComponent implements OnInit {
   public tooltipShowDelay;
   public rowSelection;
   public getRowNodeId;
+  public groupHeaderHeight;
+  public headerHeight;
+  public rowHeight;
 
   rowData: Booking[];
   public rowClassRules;
@@ -33,36 +36,47 @@ export class BookingsListComponent implements OnInit {
     this.getRowNodeId = function (data) {
       return data.bookingId;
     };
-    this.domLayout = 'autoHeight';
+    this.domLayout = 'normal';
     this.tooltipShowDelay = 100;
-    this.rowSelection = 'multiple';
+    this.rowSelection = 'single';
 
     this.frameworkComponents = {
       btnCellRenderer: UpdateButtonComponent
     };
     //console.log("Called const");
+
+    this.groupHeaderHeight = 75;
+    this.headerHeight = 50;
+    this.rowHeight = 40;
+    this.defaultColDef = {resizeable:true}
   }
 
-  ngOnInit(): void {
-    this.bookingDataService.fetchData()
-    //console.log("Called onInit");
-  }
 
   columnDefs = [
-    { headerName: '', field: '', checkboxSelection: true, width: 50 },
     {
-      headerName: 'Update',
-      cellRenderer: 'btnCellRenderer',
-      cellRendererParams: {
-        clicked: function () {
-        }
-      },
-      width: 100
-    },
-    { headerName: 'BookingId', field: 'bookingId', width: 100 },
-    { headerName: 'Guest Name', field: 'guestName' },
-    { headerName: 'CheckIn', field: 'checkinDate' },
-    { headerName: 'CheckOut', field: 'checkoutDate' }
+      headerName: 'Reservations',
+      children: [
+        {
+          headerName: '', field: '',checkboxSelection: true,width: 50
+        },
+        {
+          headerName: 'Update',cellRenderer: 'btnCellRenderer',
+          cellRendererParams: {
+            clicked: function () {
+            }
+          },
+          width: 100
+        },
+        {
+          headerName: 'Booking Id', field: 'bookingId', width: 150
+        },
+        { headerName: 'Guest Name', field: 'guestName' },
+        { headerName: 'Phone', field: 'phone' },
+        { headerName: 'Room-No', field: 'roomNumber',width:150 },
+        { headerName: 'CheckOut', field: 'checkoutDate' },
+        { headerName: 'CheckOut', field: 'checkoutDate' }
+      ]
+    }
   ];
 
   getRowStyle(params) {
@@ -73,8 +87,10 @@ export class BookingsListComponent implements OnInit {
     } else if (params.data.fullPaymentDone === true) {
       return { 'background-color': '#CCFFCC' }
     }
+  }
 
-
+  onFirstDataRendered(params){
+    params.api.sizeColumnsToFit();
   }
 
   onGridReady(params) {

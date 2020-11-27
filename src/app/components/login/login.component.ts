@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
+import Typewriter from 't-writer.js'
 
 @Component({
   selector: 'app-login',
@@ -7,9 +9,27 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LoginComponent implements OnInit {
 
-  constructor() { }
+
+  constructor(private router: Router) { }
 
   ngOnInit(): void {
+
+    const target = document.querySelector('.tw');
+
+    const writer = new Typewriter(target, {
+      loop: true,
+      typeColor: '#1E90FF'
+    })
+
+    writer.type('Welcome to Hotel Management Solutions').rest(500).start();
+  }
+
+  viewDashboard(){
+    this.router.navigateByUrl('/dashboard');
+  }
+
+  viewBookings(){
+    this.router.navigateByUrl('/bookings');
   }
 
 }

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, ViewChild } from '@angular/core';
+import { Component, EventEmitter, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Location } from '@angular/common';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
@@ -8,22 +8,30 @@ import { ActivatedRoute } from '@angular/router';
 import { Booking } from 'src/app/core/models/booking.model';
 import Swal from 'sweetalert2';
 
+
+export interface Room{
+  roomType : string,
+  roomSize : string,
+  roomNumber : string
+}
+
 @Component({
   selector: 'app-bookings-form',
-  templateUrl: './bookings-form.component.html',
-  styleUrls: ['./bookings-form.component.css']
+  templateUrl: './new.html',
+  styleUrls: ['./new.css']
 })
 export class BookingsFormComponent implements OnInit {
 
   @ViewChild('checkOutDP') checkOutDP;
   submitted: boolean = false;
   reservationForm: FormGroup;
-  roomTypes: {};
-  roomSizes: {};
-  roomNumbers: {};
+  roomTypes: any;
+  roomSizes: any;
+  roomNumbers: any;
   existingBookingId: string;
   existingBooking: Booking;
   checkOutStatus: boolean;
+  selectedRooms:Array<Room> = [];
 
   private _checkinDate: Date;
   private _checkinTime: string;
@@ -31,6 +39,7 @@ export class BookingsFormComponent implements OnInit {
   private _checkoutTime: string;
   private _roomType: string;
   private _roomSize: string;
+  
   
   constructor(private dataService: RefDataService, private bookingDataService: BookingsDataService, private route: ActivatedRoute, private location: Location) { }
 
@@ -44,12 +53,8 @@ export class BookingsFormComponent implements OnInit {
 
 
     this.reservationForm = new FormGroup({
-      firstName: new FormControl('', Validators.required),
-      middleName: new FormControl(''),
-      lastName: new FormControl(''),
-      guestName: new FormControl(''),
-      firstLine: new FormControl(''),
-      secondLine: new FormControl(''),
+      guestName: new FormControl('', Validators.required),
+      address: new FormControl(''),
       city: new FormControl(''),
       state: new FormControl(''),
       zip: new FormControl(''),
@@ -57,8 +62,7 @@ export class BookingsFormComponent implements OnInit {
       email: new FormControl(''),
       idType: new FormControl(''),
       idNumber: new FormControl(''),
-      adults: new FormControl(''),
-      child: new FormControl(''),
+      guests: new FormControl(1),
       fullPaymentDone: new FormControl(''),
       paymentAmount: new FormControl(''),
       checkinDate: new FormControl(),
@@ -71,6 +75,7 @@ export class BookingsFormComponent implements OnInit {
       bookingStatus: new FormControl({ value: '', disabled: true }),
       checkinDone: new FormControl({ value: "false", disabled: true }),
       checkoutDone: new FormControl("false"),
+      groupReservation:new FormControl(),
       bookingId: new FormControl('')
     });
     if (this.existingBookingId) {
@@ -185,7 +190,6 @@ export class BookingsFormComponent implements OnInit {
             this.reservationForm.get('roomNumber').enable()
           })
     }
-
   }
 
   onChangeRoomNumber(roomNumber: string) {
@@ -207,6 +211,52 @@ export class BookingsFormComponent implements OnInit {
       });
       });
     }
+  }
+
+  increment(){
+    //console.log(this.reservationForm.get('guests').value);
+    let guests = this.reservationForm.get('guests').value;
+    //console.log(guests++);
+    this.reservationForm.patchValue({guests:++guests})
+    console.log("Grp ",this.reservationForm.get('groupReservation').value);
+  }
+
+  decrement(){
+    let guests = this.reservationForm.get('guests').value;
+    //console.log(guests++);
+    this.reservationForm.patchValue({guests:--guests})
+  }
+
+  addRoom(){
+    var selectedRoom = {
+      roomType:this.reservationForm.get('roomType').value,    
+      roomSize:this.reservationForm.get('roomSize').value,
+      roomNumber:this.reservationForm.get('roomNumber').value
+    };
+    this.selectedRooms.push(selectedRoom)
+    this.roomNumbers.splice(this.roomNumbers.indexOf(this.reservationForm.get('roomNumber').value),1)
+    this.reservationForm.patchValue({
+      guests : 1,
+      roomType :'',
+      roomSize :'',
+      roomNumber : ''
+    });
+    this.reservationForm.get('roomType').disable();
+    this.reservationForm.get('roomSize').disable();
+    this.reservationForm.get('roomNumber').disable();
+    this.dataService.roomTypes(this._checkinDate, this._checkinTime, this._checkoutDate, this._checkoutTime).subscribe(
+      data => {
+        this.roomTypes = data
+        this.reservationForm.get('roomType').enable()
+      });
+  }
+
+  deleteRow(index){
+    console.log(this.selectedRooms[index])
+    this.selectedRooms.splice(index,1);
+    this.roomTypes.push(this.selectedRooms[index].roomType);
+    this.roomSizes.push(this.selectedRooms[index].roomSize);
+    this.roomNumbers.push(this.selectedRooms[index].roomNumber);
   }
 
   onReset() {

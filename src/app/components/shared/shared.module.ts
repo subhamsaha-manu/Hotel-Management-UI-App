@@ -12,7 +12,9 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatSelectModule} from '@angular/material/select';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBarModule} from '@angular/material/snack-bar';
+import { MatCheckboxModule} from '@angular/material/checkbox'; 
 import { FlexLayoutModule } from '@angular/flex-layout';
+
 
 
 
@@ -27,7 +29,8 @@ const materialModules = [
   MatNativeDateModule,
   MatSelectModule,
   MatDialogModule,
-  MatSnackBarModule
+  MatSnackBarModule,
+  MatCheckboxModule
 ]
 
 @NgModule({
