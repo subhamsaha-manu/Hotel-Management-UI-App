@@ -89,4 +89,5 @@
 ::ng-deep .ag-cell {
     font-size: 15px !important;
     line-height: 38px !important;
+    text-align: center;
 }

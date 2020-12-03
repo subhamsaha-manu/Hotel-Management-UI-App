@@ -1,0 +1,39 @@
+<div class="dashboard-content" fxFlex="100" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="center center">
+    <mat-card class="card-element">
+        <mat-card-header class="card-header">
+            <mat-card-title>Guest Invoice</mat-card-title>
+        </mat-card-header>
+        <mat-card-content fxLayout="column" fxLayoutGap="20px"fxLayoutAlign="space-between end" style="margin-top: 10px;font-size: 22px;">
+            <div fxLayout="row">
+                <mat-label>{{existingBooking.bookingId}}</mat-label>
+                <mat-label>{{existingBooking.guestName}}</mat-label>
+            </div>
+            <div fxLayout="row" fxLayoutGap="20px">
+                <span class="iconify" data-icon="flat-color-icons:calendar" data-inline="false" data-width="30px"
+                    data-height="30px"></span>
+                <mat-label>{{existingBooking.checkinDate}}</mat-label>
+                <mat-label> - </mat-label>
+                <mat-label>{{existingBooking.checkoutDate}}</mat-label>
+                <mat-label>{{existingBooking.adults}}</mat-label>
+                <mat-label>Guests</mat-label>
+            </div>
+            <hr>
+            <div fxLayout="row" fxLayoutGap="20px">
+                <mat-label>{{existingBooking.roomType}}</mat-label>
+                <mat-label>{{existingBooking.roomSize}}</mat-label>
+                <mat-label> Rs. </mat-label>
+                <mat-label></mat-label>
+            </div>
+            <hr>
+            <div fxLayout="row" fxLayoutAlign="space-between end">
+                <mat-label style="margin-right: 20px;">Payable Amount</mat-label>
+                <mat-label> Rs. </mat-label>
+                <mat-label></mat-label>
+            </div>
+            <div fxLayout="row" fxLayoutGap="20px">
+                <button mat-raised-button (click)="close()" style="background:#128036;color: white;">Close</button>
+                <button mat-raised-button (click)="print()" style="background:#128036;color: white;">Print</button>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</div>

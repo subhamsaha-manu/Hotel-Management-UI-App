@@ -18,7 +18,11 @@ const routes: Routes = [{
   path: 'rooms',
   loadChildren: () => import('./components/rooms').then(m => m.RoomsModule)
   
-}, {
+},{
+  path: 'payment',
+  loadChildren: () => import('./components/payment').then(m => m.PaymentModule)
+  
+},{
   path: '**',
   component: NoContentComponent
 }];

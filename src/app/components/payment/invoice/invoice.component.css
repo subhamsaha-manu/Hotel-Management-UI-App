@@ -1,0 +1,29 @@
+.card-element{
+    margin: 10px;
+    width: 33.3%;
+    height: 70%;
+    box-shadow: 2px 10px 8px 2px #888888;
+}
+
+.mat-card-title {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 25px;
+    font-weight: bold;
+    line-height: 1.6;
+}
+
+.card-header {
+    background: rgb(249, 249, 251) none repeat scroll 0% 0%;
+    justify-content: center;
+    margin-bottom: 5px;
+    padding-top: 15px;
+}
+
+hr {
+    display: block;
+    height: 1px;
+    border: 0;
+    border-top: 1px solid #ccc;
+    margin: 1em 0;
+    padding: 0;
+}

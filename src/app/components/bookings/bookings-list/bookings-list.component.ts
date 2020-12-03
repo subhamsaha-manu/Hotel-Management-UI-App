@@ -132,6 +132,15 @@ export class BookingsListComponent {
   makeNewBooking() {
     this.router.navigateByUrl('/bookings/create');
   }
+
+  generateInvoice(){
+    var selectedRow = this.gridApi.getSelectedRows();
+    if (selectedRow.length == 0) {
+      Swal.fire('Info', 'Need to select atleast a row', 'info')
+    }else{
+      this.router.navigateByUrl('/payment/invoice/'+selectedRow[0].bookingId );
+    }    
+  }
 }
 
 
