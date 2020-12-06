@@ -65,6 +65,7 @@ export class BookingsFormComponent implements OnInit {
       guests: new FormControl(1),
       fullPaymentDone: new FormControl(''),
       paymentAmount: new FormControl(''),
+      totalPayableAmount:new FormControl({value:'',disabled:true}),
       checkinDate: new FormControl(),
       checkoutDate: new FormControl(),
       checkinTime: new FormControl({ value: '09:00', disabled: true }),

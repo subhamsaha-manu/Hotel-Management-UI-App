@@ -1,39 +1,50 @@
 <div class="dashboard-content" fxFlex="100" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="center center">
-    <mat-card class="card-element">
+    <mat-card class="card-element" fxLayout="column">
         <mat-card-header class="card-header">
             <mat-card-title>Guest Invoice</mat-card-title>
         </mat-card-header>
-        <mat-card-content fxLayout="column" fxLayoutGap="20px"fxLayoutAlign="space-between end" style="margin-top: 10px;font-size: 22px;">
+        <mat-card-content fxLayout="column" fxLayoutGap="10px" fxLayoutAlign="space-around stretch"
+            style="margin-top: 10px;font-size: 22px;">
             <div fxLayout="row">
-                <mat-label>{{existingBooking.bookingId}}</mat-label>
-                <mat-label>{{existingBooking.guestName}}</mat-label>
-            </div>
-            <div fxLayout="row" fxLayoutGap="20px">
-                <span class="iconify" data-icon="flat-color-icons:calendar" data-inline="false" data-width="30px"
-                    data-height="30px"></span>
-                <mat-label>{{existingBooking.checkinDate}}</mat-label>
-                <mat-label> - </mat-label>
-                <mat-label>{{existingBooking.checkoutDate}}</mat-label>
-                <mat-label>{{existingBooking.adults}}</mat-label>
-                <mat-label>Guests</mat-label>
+                <mat-label fxFlex="50">{{existingBooking.bookingId}}</mat-label>
+                <mat-label fxFlex="50" style="text-align: center;">{{existingBooking.guestName}}</mat-label>
             </div>
             <hr>
-            <div fxLayout="row" fxLayoutGap="20px">
-                <mat-label>{{existingBooking.roomType}}</mat-label>
-                <mat-label>{{existingBooking.roomSize}}</mat-label>
-                <mat-label> Rs. </mat-label>
-                <mat-label></mat-label>
+            <div fxLayout="row">
+                <div fxFlex="75"> 
+                    <span style="margin-top:10px" class="iconify" data-icon="flat-color-icons:calendar" data-inline="false" data-width="30px"
+                        data-height="30px"></span>
+                    <mat-label>{{existingBooking.checkinDate}}</mat-label>
+                    <mat-label> - </mat-label>
+                    <mat-label>{{existingBooking.checkoutDate}}</mat-label>
+                </div>
+                <div fxFlex="25" style="padding-top: 20px; text-align: center;">
+                    <mat-label>{{existingBooking.adults}}</mat-label>
+                    <mat-label>Guests</mat-label>
+                </div>
             </div>
             <hr>
-            <div fxLayout="row" fxLayoutAlign="space-between end">
-                <mat-label style="margin-right: 20px;">Payable Amount</mat-label>
-                <mat-label> Rs. </mat-label>
-                <mat-label></mat-label>
+            <div fxLayout="row">
+                <div fxFlex="50">
+                    <mat-label style="margin-right: 20px;">{{existingBooking.roomType}}</mat-label>
+                    <mat-label>{{existingBooking.roomSize}}</mat-label>
+                </div>
+                <div fxFlex="50" style="text-align: center;">
+                    <mat-label> Rs. </mat-label>
+                    <mat-label>5000</mat-label>
+                </div>
             </div>
-            <div fxLayout="row" fxLayoutGap="20px">
-                <button mat-raised-button (click)="close()" style="background:#128036;color: white;">Close</button>
-                <button mat-raised-button (click)="print()" style="background:#128036;color: white;">Print</button>
+            <div fxLayout="row">
+                <mat-label fxFlex="50">Payable Amount</mat-label>
+                <div fxFlex="50" style="text-align: center;">
+                    <mat-label> Rs. </mat-label>
+                    <mat-label>5000</mat-label>
+                </div>
             </div>
-        </mat-card-content>
+        </mat-card-content>        
+        <mat-card-actions>
+            <button mat-raised-button fxFlex="50" (click)="close()" style="background:rgb(230, 230, 230) none repeat scroll 0% 0%;color: black;">Close</button>
+            <button mat-raised-button fxFlex="50" (click)="print()" style="background:#128036;color: white;">Print</button>
+        </mat-card-actions>
     </mat-card>
 </div>

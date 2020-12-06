@@ -54,7 +54,7 @@ button {
     #selectedRoomsCard{
         width: 96%;
     }
-.mobile-view{
+    .mobile-view{
         width: 190px !important;
         margin-right: 4px !important;
         margin-left: 4px !important;

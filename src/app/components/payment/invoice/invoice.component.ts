@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Booking } from 'src/app/core/models/booking.model';
 import { BookingsDataService } from 'src/app/core/services/bookings-data.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-invoice',
@@ -14,7 +15,7 @@ export class InvoiceComponent implements OnInit {
   existingBookingId: string;  
   existingBooking: Booking;
 
-  constructor(private bookingDataService: BookingsDataService,private route: ActivatedRoute) { }
+  constructor(private bookingDataService: BookingsDataService,private route: ActivatedRoute,private location: Location) { }
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
@@ -26,4 +27,9 @@ export class InvoiceComponent implements OnInit {
     console.log(this.existingBooking.guestName);
   }
 
+  print(){}
+
+  close(){
+    this.location.back();
+  }
 }

@@ -73,8 +73,8 @@ export class BookingsDataService {
   private handleError(method: string, error: HttpErrorResponse) {
     if (error instanceof HttpErrorResponse) {
       //console.log(error.error)
-      if (JSON.parse(error.error).code) {
-        Swal.fire('Error', JSON.parse(error.error).message, 'info');
+      if (JSON.parse(error?.error).code) {
+        Swal.fire('Error', JSON.parse(error?.error).message, 'info');
       } else {
         Swal.fire('Error', 'Contact administrator', 'error');
       }
