@@ -28,6 +28,7 @@
     "ag-charts-community": "^2.1.0",
     "ag-grid-community": "^24.1.0",
     "ngx-material-timepicker": "^5.5.3",
+    "pdfmake": "^0.1.68",
     "rxjs": "~6.6.0",
     "sweetalert2": "^10.10.0",
     "t-writer.js": "^1.0.4",
