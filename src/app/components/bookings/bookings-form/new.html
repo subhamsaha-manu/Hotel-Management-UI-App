@@ -119,9 +119,16 @@
                             <input matInput placeholder="State" formControlName="state">
                         </mat-form-field>
                         <mat-form-field appearance="outline" class="mobile-view" fxFlex="50">
+                            <mat-label for="country">Country</mat-label>
+                            <input matInput placeholder="Country" formControlName="country">
+                        </mat-form-field>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="space-between stretch" fxLayoutGap="5px">
+                        <mat-form-field appearance="outline" class="mobile-view" fxFlex="50">
                             <mat-label for="zip">Zip</mat-label>
                             <input matInput placeholder="Zip" formControlName="zip">
                         </mat-form-field>
+                        <mat-checkbox id="foreignNationalCheckBox" fxFlex="50" formControlName="foreignNational">Foreign National</mat-checkbox>
                     </div>
                     <div fxLayout="row" fxLayoutAlign="space-between stretch" fxLayoutGap="5px">
                         <mat-form-field appearance="outline" class="mobile-view" fxFlex="50">

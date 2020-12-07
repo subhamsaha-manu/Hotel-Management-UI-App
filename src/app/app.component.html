@@ -5,15 +5,18 @@
                    [opened]="!mobileQuery.matches" fixedTopGap="56"
                    [class.is-mobile]="mobileQuery.matches"
                    class="sidenav">
-        <mat-nav-list style="margin-top: 50px;">
+        <mat-nav-list style="margin-top: 110px;">
           <a class="link" mat-list-item [routerLink]="['/']">Home</a>
         </mat-nav-list>
+        <hr>
         <mat-nav-list>
           <a class="link" mat-list-item [routerLink]="['dashboard']" routerLinkActive="router-link-active">Dashboard</a>
         </mat-nav-list>
+        <hr>
         <mat-nav-list>
           <a class="link" mat-list-item [routerLink]="['bookings']" routerLinkActive="router-link-active">Bookings</a>
         </mat-nav-list>
+        <hr>
       </mat-sidenav>
     <mat-sidenav-content class="main_content">
         <mat-toolbar class="toolbar">

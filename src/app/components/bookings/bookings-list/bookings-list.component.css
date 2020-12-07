@@ -12,13 +12,13 @@
     margin-top: 10px;
     width: 98%;
     height: 95%;
-    border: 2px solid;
     border-radius: 10px;
     box-shadow: 2px 10px 8px 2px #888888;
 }
 
-.ag-theme-balham .ag-root-wrapper {
+::ng-deep .ag-theme-balham .ag-root-wrapper {
     border-radius: 10px !important;
+    padding: 5px;
 }
 
 .legendsButtonsContainer {
@@ -26,14 +26,16 @@
     margin-top: 5px;
     width: 96%;
     padding: 8px;
-    border: 2px solid;
     box-shadow: 2px 10px 8px 2px #888888;
     background: rgb(249, 249, 251) none repeat scroll 0% 0%;
+    border-radius: 8px;
+    margin-bottom: 10px;
 }
 
 .legends {
     width: 400px;
     height: 40px;
+    padding-top: 20px;
 }
 
 .mat-raised-button {
@@ -65,21 +67,25 @@
 
 ::ng-deep .ag-header-row-column-group {
     background: rgb(249, 249, 251) none repeat scroll 0% 0%;
-    border-bottom: 2px solid;
+    border: 1px solid #ccc;
 }
 
 ::ng-deep .ag-header-row-column {
     font-family: "Open Sans", sans-serif;
     background-color: rgb(254, 246, 233);
     text-transform: uppercase;
+    border: 1px solid #ccc;
+    margin-top: 10px;
 }
 
 ::ng-deep .ag-header-cell-text {
     margin: auto;
     color: black;
-    font-size: 18px;
+    font-size: 20px;
 }
-
+::ng-deep .ag-body-viewport{
+    border: 1px solid #ccc;
+}
 ::ng-deep .ag-row {
     font-family: "Open Sans", sans-serif;
     border-top: 0.5px solid !important;
@@ -87,7 +93,7 @@
 }
 
 ::ng-deep .ag-cell {
-    font-size: 15px !important;
+    font-size: 18px !important;
     line-height: 38px !important;
     text-align: center;
 }

@@ -34,7 +34,7 @@ button {
 }
 
 .payment-button {
-    background: blueviolet;
+    background: #2bafe2;
     margin-bottom: 20px;
     color: white;   
 }
@@ -45,6 +45,9 @@ button {
     margin-left: 10px
 }
 
+::ng-deep #foreignNationalCheckBox{
+    margin-top: 18px;
+}
 
 
 @media only screen and (max-width: 600px) {

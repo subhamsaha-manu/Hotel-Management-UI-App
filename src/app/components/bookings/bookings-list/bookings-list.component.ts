@@ -45,9 +45,9 @@ export class BookingsListComponent {
     };
     //console.log("Called const");
 
-    this.groupHeaderHeight = 75;
-    this.headerHeight = 50;
-    this.rowHeight = 40;
+    this.groupHeaderHeight = 90;
+    this.headerHeight = 60;
+    this.rowHeight = 50;
     this.defaultColDef = {resizeable:true}
   }
 

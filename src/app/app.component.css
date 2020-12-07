@@ -1,6 +1,6 @@
 mat-sidenav {
   width: 12%;
-  border: 2px solid black;
+  border: 2px solid #ccc;
 }
 
 
@@ -14,7 +14,7 @@ mat-sidenav {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  border: 2px solid black;
+  border: 2px solid #ccc;
 }
 
 .content {
@@ -52,8 +52,22 @@ h1.app-name:hover {
   color: black;
 }
 
+hr {
+  display: block;
+  height: 1px;
+  border: 0;
+  border-top: 1px solid #ccc;
+  margin: 1em 0;
+  padding: 0;
+  margin-top: -4px;
+  width: 90%;
+  float: right;
+}
+
 .toolbar{
   border: 2px solid;
+  height: 75px;
+  background: black;
 }
 .is-mobile .toolbar {
   position: fixed;
@@ -61,9 +75,10 @@ h1.app-name:hover {
   z-index: 2;
 }
 
-.link{
-  font-family: "Open Sans", sans-serif;
+.link{  
+  font-family: 'Roboto', sans-serif;
   font-size: 20px !important;
+  margin-bottom: 20px;
 }
 
 @media only screen and (max-width: 600px) {
