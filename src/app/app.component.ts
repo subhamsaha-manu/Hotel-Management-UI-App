@@ -1,5 +1,5 @@
 import { MediaMatcher } from '@angular/cdk/layout';
-import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import { BookingsDataService } from './core/services/bookings-data.service';
 
@@ -13,7 +13,8 @@ export class AppComponent implements OnDestroy,OnInit {
   mobileQuery: MediaQueryList;
 
   private _mobileQueryListener: () => void;
-
+  isMenuOpen: boolean=true;
+  @ViewChild('sidenav')sidenav;
   constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher,private router:Router, private bookingDataService: BookingsDataService) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     //console.log("Mobile Query ",this.mobileQuery.matches)
@@ -29,6 +30,12 @@ export class AppComponent implements OnDestroy,OnInit {
 
   navigateToHome(){
     this.router.navigateByUrl('/');
+  }
+
+  onSidenavClick(): void {
+    this.isMenuOpen = !this.isMenuOpen;
+    this.sidenav.toggle();
+    //console.log(`Menu open ${this.isMenuOpen}`);
   }
   
 }

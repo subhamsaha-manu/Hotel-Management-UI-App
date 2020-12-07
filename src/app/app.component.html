@@ -1,28 +1,28 @@
-<app-main-layout>
-  <mat-sidenav-container class="all-wrap" [class.is-mobile-device]="mobileQuery.matches">
-    <mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'side'"
-                   [fixedInViewport]="false"
-                   [opened]="!mobileQuery.matches" fixedTopGap="56"
-                   [class.is-mobile]="mobileQuery.matches"
-                   class="sidenav">
-        <mat-nav-list style="margin-top: 110px;">
-          <a class="link" mat-list-item [routerLink]="['/']">Home</a>
-        </mat-nav-list>
-        <hr>
-        <mat-nav-list>
-          <a class="link" mat-list-item [routerLink]="['dashboard']" routerLinkActive="router-link-active">Dashboard</a>
-        </mat-nav-list>
-        <hr>
-        <mat-nav-list>
-          <a class="link" mat-list-item [routerLink]="['bookings']" routerLinkActive="router-link-active">Bookings</a>
-        </mat-nav-list>
-        <hr>
-      </mat-sidenav>
+<app-main-layout [class.is-mobile-device]="mobileQuery.matches">
+  <mat-toolbar class="toolbar">
+    <button mat-button class="menu-button" (click)="onSidenavClick()" style="padding-top: 5px;"> 
+      <mat-icon>{{ isMenuOpen ? 'cancel' : 'menu' }}</mat-icon>
+    </button>
+    <h1 class="app-name" (click)="navigateToHome()">Hotel Management</h1>
+  </mat-toolbar>
+  <mat-sidenav-container class="all-wrap">
+    <mat-sidenav #sidenav [mode]="mobileQuery.matches ? 'over' : 'side'" [fixedInViewport]="false"
+      [opened]="!mobileQuery.matches" fixedTopGap="56" [class.is-mobile]="mobileQuery.matches" class="sidenav" (click)="onSidenavClick()">
+      <mat-nav-list style="margin-top: 110px;">
+        <a class="link" mat-list-item [routerLink]="['/']">Home</a>
+      </mat-nav-list>
+      <hr>
+      <mat-nav-list>
+        <a class="link" mat-list-item [routerLink]="['dashboard']" routerLinkActive="router-link-active">Dashboard</a>
+      </mat-nav-list>
+      <hr>
+      <mat-nav-list>
+        <a class="link" mat-list-item [routerLink]="['bookings']" routerLinkActive="router-link-active">Bookings</a>
+      </mat-nav-list>
+      <hr>
+    </mat-sidenav>
     <mat-sidenav-content class="main_content">
-        <mat-toolbar class="toolbar">
-            <button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
-            <h1 class="app-name" (click)="navigateToHome()">Hotel Management</h1>
-        </mat-toolbar>
+
       <main fxFlex fxLayout="column" class="content">
         <router-outlet></router-outlet>
       </main>
