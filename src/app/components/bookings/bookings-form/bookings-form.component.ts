@@ -31,6 +31,7 @@ export class BookingsFormComponent implements OnInit {
   checkOutStatus: boolean;
   selectedRooms: Array<Room> = [];
   condition:boolean=true;
+  showHide:boolean=false;
 
   private _checkinDate: Date;
   private _checkinTime: string;
@@ -250,6 +251,7 @@ export class BookingsFormComponent implements OnInit {
         this.roomTypes = data
         this.reservationForm.get('roomType').enable()
       });
+    this.showHide=true;
   }
 
   deleteRow(index) {
