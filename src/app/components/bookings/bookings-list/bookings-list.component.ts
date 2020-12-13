@@ -51,7 +51,6 @@ export class BookingsListComponent {
     this.defaultColDef = {resizeable:true}
   }
 
-
   columnDefs = [
     {
       headerName: 'Reservations',
@@ -72,7 +71,7 @@ export class BookingsListComponent {
         },
         { headerName: 'Guest Name', field: 'guestName' },
         { headerName: 'Phone', field: 'phone' },
-        { headerName: 'Room-No', field: 'roomNumber',width:150 },
+        { headerName: 'Room-No', field: '',width:150 },
         { headerName: 'CheckOut', field: 'checkoutDate' },
         { headerName: 'CheckOut', field: 'checkoutDate' }
       ]
@@ -82,9 +81,9 @@ export class BookingsListComponent {
   getRowStyle(params) {
     if (params.data.bookingStatus === 'CANCEL') {
       return { 'background-color': '#E0E0E0' }
-    } else if (params.data.fullPaymentDone === false) {
+    } else if (params.data.bookingStatus === 'PENDING') {
       return { 'background-color': '#FF9999' };
-    } else if (params.data.fullPaymentDone === true) {
+    } else if (params.data.bookingStatus === 'COMPLETE') {
       return { 'background-color': '#CCFFCC' }
     }
   }

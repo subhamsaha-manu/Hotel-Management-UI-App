@@ -103,7 +103,7 @@
             <mat-date-range-input [rangePicker]="picker">
               <input matStartDate formControlName="checkinDate" placeholder="Check-In Date" disabled>
               <input matEndDate formControlName="checkoutDate" 
-              (dateInput)="addCheckoutDate('input', $event)"
+              (dateInput)="addCheckoutDate()"
               placeholder="Check-Out Date" disabled>
             </mat-date-range-input>
             <mat-datepicker-toggle matSuffix [for]="picker">

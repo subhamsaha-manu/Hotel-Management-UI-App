@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Room } from './room.model';
 
 @Injectable({
   providedIn: 'root'
@@ -6,33 +7,29 @@ import { Injectable } from '@angular/core';
 
 export class Booking{
   constructor(
-      public firstName : string,
-      public middleName : string,
-      public lastName : string,
-      public firstLine : string,
-      public secondLine : string,
+      public guestName : string,
+      public email : string,
+      public phone : string,
+      public address : string,
       public city : string,
       public state : string,
-      public zip : number,
-      public phone : number,
-      public email : string,
+      public country : string,
+      public zip : string,      
       public idType : string,
       public idNumber : string,
-      public adults : number,
-      public child : number,
       public checkinDate : string,
       public checkinTime : string,
       public checkoutDate : string,
       public checkoutTime : string,
-      public fullPaymentDone : boolean,
+      public totalNoOfGuests:number,
       public paymentAmount : number,
-      public roomNumber : string,
-      public roomType : string,
-      public roomSize : string,            
-      public bookingStatus : string,      
+      public groupReservation : boolean,
+      public internationalGuests : boolean,
+      public roomDetails?:Array<Room>,      
+      public totalPaymentAmount? : number,       
       public checkinDone : boolean =false,
       public checkoutDone : boolean = false,
-      public bookingId? : string,
-      public guestName? : string
+      public bookingId? : string,          
+      public bookingStatus : string="",
   ){}
 }

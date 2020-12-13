@@ -4,6 +4,7 @@ import { Observable, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import Swal from 'sweetalert2';
 import { Booking } from '../models/booking.model';
+import { Room } from '../models/room.model';
 
 @Injectable({
   providedIn: 'root'
@@ -17,30 +18,56 @@ export class BookingsDataService {
 
   public bookings: Booking[]
 
-  saveData(bookingForm) {
+  saveData(bookingForm,selectedRooms:Room[]) {
     var url = this.baseUrl + "/save";
-    bookingForm.checkinDate = this.converDateFormat(new Date(bookingForm.checkinDate))
-    bookingForm.checkinTime = bookingForm.checkinTime + ":00"
-    bookingForm.checkoutDate = this.converDateFormat(new Date(bookingForm.checkoutDate))
-    bookingForm.checkoutTime = bookingForm.checkoutTime + ":00"
+    var booking = this.mapBookingFormToBookingObj(bookingForm,selectedRooms);
+    console.log("Selected Rooms in saveData() ",selectedRooms);
 
-    return this.http.post(url, bookingForm, { responseType: 'text' }).pipe(
+    return this.http.post(url, booking, { responseType: 'text' }).pipe(
       catchError(err => this.handleError('saveData', err))
     );
   }
 
-  updateData(bookingForm) {
+  updateData(bookingForm,selectedRooms=[]) {
     var url = this.baseUrl + "/update";
-    console.log("Update Data ",bookingForm)
-    bookingForm.checkinDate = this.converDateFormat(new Date(bookingForm.checkinDate))
-    bookingForm.checkinTime = bookingForm.checkinTime + ":00"
-    bookingForm.checkoutDate = this.converDateFormat(new Date(bookingForm.checkoutDate))
-    bookingForm.checkoutTime = bookingForm.checkoutTime + ":00"
-
-    return this.http.post(url, bookingForm, { responseType: 'text' }).pipe(
+    console.log("Update Data ",JSON.stringify(bookingForm)+" "+JSON.stringify(selectedRooms));    
+    var booking = this.mapBookingFormToBookingObj(bookingForm,selectedRooms);
+    return this.http.post(url, booking, { responseType: 'text' }).pipe(
       catchError(err => this.handleError('updateData', err))
     );
     //console.log(newBooking)
+  }
+
+  mapBookingFormToBookingObj(bookingForm,selectedRooms):Booking{
+
+    var booking = new Booking (
+      bookingForm.guestName,
+      bookingForm.email,
+      bookingForm.phone,
+      bookingForm.address,
+      bookingForm.city,
+      bookingForm.state,
+      bookingForm.country,
+      bookingForm.zip,
+      bookingForm.idType,
+      bookingForm.idNumber,
+      this.converDateFormat(new Date(bookingForm.checkinDate)),
+      bookingForm.checkinTime + ":00",
+      this.converDateFormat(new Date(bookingForm.checkoutDate)),
+      bookingForm.checkoutTime + ":00",
+      0,
+      bookingForm.paymentAmount,
+      bookingForm.groupReservation,
+      bookingForm.internationalGuests,
+      selectedRooms,
+      bookingForm.totalPaymentAmount,
+      bookingForm.checkinDone,
+      bookingForm.checkoutDone,
+      bookingForm.bookingId,
+      bookingForm.bookingStatus
+    )
+
+    return booking;
   }
 
   converDateFormat(date: Date): string {
@@ -60,7 +87,6 @@ export class BookingsDataService {
     var url = this.baseUrl + "/findAll"
     this.http.get<Booking[]>(url).pipe(catchError(err => this.handleError('fetchData', err))).subscribe(response => {
       response.map(data => {
-        data.guestName = data.firstName + " " + data.middleName + " " + data.lastName
         data.checkinTime = data.checkinTime.substring(0, data.checkinTime.length - 3)
         data.checkoutTime = data.checkoutTime.substring(0, data.checkoutTime.length - 3)
       })

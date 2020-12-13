@@ -35,7 +35,7 @@ export class InvoiceComponent implements OnInit {
       content: [
         {
           text: 'HOTEL',
-          fontSize: 16,
+          fontSize: 30,
           alignment: 'center',
           color: '#047886'
         },
@@ -58,7 +58,7 @@ export class InvoiceComponent implements OnInit {
                 text: this.existingBooking.guestName,
                 bold:true
               },
-              { text: this.existingBooking.firstLine },
+              { text: this.existingBooking.address },
               { text: this.existingBooking.email },
               { text: this.existingBooking.phone }
             ],
@@ -68,7 +68,7 @@ export class InvoiceComponent implements OnInit {
                 alignment: 'right'
               },
               { 
-                text: `Bill No : ${((Math.random() *1000).toFixed(0))}`,
+                text: `Booking Id : ${this.existingBooking.bookingId}`,
                 alignment: 'right'
               }
             ]
@@ -81,22 +81,32 @@ export class InvoiceComponent implements OnInit {
         {
           table: {
             headerRows: 1,
-            widths: ['auto', 'auto', 'auto', 'auto','*'],
+            widths: ['auto', 'auto', 'auto', 'auto','auto','*'],
             body: [
-              ['Sl.No', 'Room-Type', 'Room-Size', 'Room-Number','Rate'],
-              /*...this.existingBooking.products.map(p => ([p.name, p.price, p.qty, (p.price*p.qty).toFixed(2)])),*/
-              [1,this.existingBooking.roomType,this.existingBooking.roomSize,this.existingBooking.roomNumber,5000],
-              [{text: 'Total Amount', colSpan: 4}, {}, {}, {},/*this.invoice.products.reduce((sum, p)=> sum + (p.qty * p.price), 0).toFixed(2)*/5000]
+              [
+                {text:'Sl.No',alignment:'center',bold:true,fillColor:'#f9f9fb'},
+                {text:'Room-Type',alignment:'center',bold:true,fillColor:'#f9f9fb'},
+                {text:'Room-Size',alignment:'center',bold:true,fillColor:'#f9f9fb'},
+                {text:'Room-Number',alignment:'center',bold:true,fillColor:'#f9f9fb'},
+                {text:'Guest',alignment:'center',bold:true,fillColor:'#f9f9fb'},
+                {text:'Rate',alignment:'center',bold:true,fillColor:'#f9f9fb'}],
+              ...this.existingBooking.roomDetails.map((ele,index) => ([index+1,ele.roomType, ele.roomSize, ele.roomNumber,ele.noOfPersons, {text:ele.roomCost,alignment:'center'}])),
+              //[1,this.existingBooking.roomType,this.existingBooking.,this.existingBooking.roomNumber,5000],
+              [{text: 'Total Payable Amount', colSpan: 5}, {}, {}, {},{},{text:this.existingBooking.totalPaymentAmount,alignment:'center'}]
             ]
           }
         },
         {
-          text: 'Additional Details',
+          text: 'CheckIn CheckOut Details',
           style: 'sectionHeader'
         },
         {
-            text: this.existingBooking.checkinDate + '-' + this.existingBooking.checkoutDate,
+            text: this.existingBooking.checkinDate + '  --  ' + this.existingBooking.checkinTime+' Hrs',
             margin: [0, 0 ,0, 15]          
+        },
+        {
+          text: this.existingBooking.checkoutDate + '  --  ' + this.existingBooking.checkoutTime+' Hrs',
+          margin: [0, 0 ,0, 15]          
         },
         {
           columns: [
@@ -110,8 +120,6 @@ export class InvoiceComponent implements OnInit {
         },
         {
             ul: [
-              'Order can be return in max 10 days.',
-              'Warrenty of the product will be subject to the manufacturer terms and conditions.',
               'This is system generated invoice.',
             ],
         }
@@ -125,7 +133,7 @@ export class InvoiceComponent implements OnInit {
         }
       }
     };
-   
+    console.log('Doc Definition ',JSON.stringify(docDefinition));
     pdfMake.createPdf(docDefinition).open();
   }
 

@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
 import { Menu, MenuAdapter } from '../models/menu.model';
+import { RoomFinder } from '../models/roomFinder.model';
 
 @Injectable({
   providedIn: 'root'
@@ -20,53 +21,34 @@ export class RefDataService {
       .pipe(map((data: any[]) => data.map(item => this.adapter.adapt(item))));
   }
 
-  roomTypes(checkinDate: Date,checkinTime: string, checkoutDate: Date, checkoutTime: string, bookingId?: string): Observable<String> {
+  roomTypes(roomFinder : RoomFinder): Observable<String> {
     const url = this.baseUrl + "/findRoomTypes";
-    let params = new HttpParams();
-    //console.log("Service roomTypes ",dateFrom+" "+dateTo)
-    
-    params = params.append('checkinDate', this.converDateFormat(checkinDate));
-    params = params.append('checkinTime', checkinTime+":00");
-    params = params.append('checkoutDate', this.converDateFormat(checkoutDate));
-    params = params.append('checkoutTime', checkoutTime+":00");
-    params = params.append('bookingId', bookingId);
-
-    return this.http.get<String>(url, { params: params });
+    console.log("Room Finder in roomType() ",roomFinder);
+    return this.http.post<String>(url,roomFinder);
   }
 
-  roomSizes(checkinDate: Date,checkinTime: string, checkoutDate: Date, checkoutTime: string,roomType:string,bookingId?: string): Observable<String> {
+  roomSizes(roomFinder : RoomFinder): Observable<String> {
     const url = this.baseUrl + "/findRoomSizes";
-    let params = new HttpParams();
-    //console.log("Service roomSizes ",dateFrom+" "+dateTo+" "+roomType)
-
-    params = params.append('checkinDate', this.converDateFormat(checkinDate));
-    params = params.append('checkinTime', checkinTime+":00");
-    params = params.append('checkoutDate', this.converDateFormat(checkoutDate));
-    params = params.append('checkoutTime', checkoutTime+":00");
-    params = params.append('roomType', roomType);
-    params = params.append('bookingId', bookingId);
-
-    return this.http.get<String>(url, { params: params });
+    console.log("Room Finder in roomSizes() ",roomFinder);
+    return this.http.post<String>(url,roomFinder);
   }
 
-  roomNumbers(checkinDate: Date,checkinTime: string, checkoutDate: Date, checkoutTime: string,roomType: string,roomSize: string,bookingId?: string): Observable<String> {
+  roomNumbers(roomFinder : RoomFinder): Observable<String> {
     const url = this.baseUrl + "/findRoomNumbers";
-    let params = new HttpParams();
-    //console.log("Service roomNumbers ",dateFrom+" "+dateTo+" "+" "+roomType+" "+roomSize)
+    console.log("Room Finder in roomNumbers() ",roomFinder);
 
-    params = params.append('checkinDate', this.converDateFormat(checkinDate));
-    params = params.append('checkinTime', checkinTime+":00");
-    params = params.append('checkoutDate', this.converDateFormat(checkoutDate));
-    params = params.append('checkoutTime', checkoutTime+":00");
-    params = params.append('roomType', roomType)
-    params = params.append('roomSize', roomSize)
-    params = params.append('bookingId', bookingId);
+    return this.http.post<String>(url,roomFinder);
+  }
 
-    return this.http.get<String>(url, { params: params });
+  roomPrice(roomFinder : RoomFinder): Observable<Number> {
+    const url = this.baseUrl + "/findRoomPrice";
+    console.log("Room Finder in roomPrice() ",roomFinder);
+
+    return this.http.post<Number>(url,roomFinder);
   }
 
 
-  converDateFormat(date: Date): string {
+  public converDateFormat(date: Date): string {
     var month = '' + (date.getMonth() + 1),
       day = '' + date.getDate(),
       year = date.getFullYear();

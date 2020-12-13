@@ -26,7 +26,8 @@ hr {
     border-top: 1px solid #ccc;
     margin: 1em 0;
     padding: 0;
-    margin-top: -53px;
+    width: 100%;
+    margin-top: -35px;
 }
 
 .mat-card{

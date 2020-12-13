@@ -29,7 +29,7 @@ export class CheckinCheckoutHandlerComponent{
     private bookingDataService: BookingsDataService) {
 
     this.toBeUpdatedBooking = this.bookingDataService.bookings.find(ele => ele.bookingId === data.bookingId)
-    //console.log("Checkout handler ", this.toBeUpdatedBooking)
+    console.log("Checkout handler ", this.toBeUpdatedBooking)
     //console.log("Checkout value init ",this.bookingCheckInCheckOutForm.get('checkOutDone').value)
     this.bookingCheckInCheckOutForm.patchValue({
       bookingId: this.toBeUpdatedBooking.bookingId,
@@ -52,12 +52,12 @@ export class CheckinCheckoutHandlerComponent{
   }
 
   onSubmit() {
-    if (this.bookingCheckInCheckOutForm.get('checkOutDone').value==="true" && !this.toBeUpdatedBooking.fullPaymentDone===true) {
+    if (this.bookingCheckInCheckOutForm.get('checkOutDone').value==="true" && this.toBeUpdatedBooking.bookingStatus==="PENDING") {
       Swal.fire('Warning', 'Cannot checkout guest as payment pending', 'warning').then(()=>this.dialogRef.close())      
     } else {
       this.toBeUpdatedBooking.checkinDone = this.bookingCheckInCheckOutForm.get('checkinDone').value
       this.toBeUpdatedBooking.checkoutDone = this.bookingCheckInCheckOutForm.get('checkOutDone').value
-      this.bookingDataService.updateData(this.toBeUpdatedBooking).subscribe(data => {
+      this.bookingDataService.updateData(this.toBeUpdatedBooking,this.toBeUpdatedBooking.roomDetails).subscribe(data => {
         Swal.fire('Success!!', 'Booking record ' + data + ' modified successfully', 'success').then(()=>{
           this.bookingDataService.fetchData();
           this.dialogRef.close();

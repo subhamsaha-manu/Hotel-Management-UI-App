@@ -10,7 +10,7 @@
                         <mat-label>Enter a date range</mat-label>
                         <mat-date-range-input [rangePicker]="picker">
                             <input matStartDate formControlName="checkinDate" placeholder="Check-In Date" disabled>
-                            <input matEndDate formControlName="checkoutDate" (dateInput)="addCheckoutDate('input', $event)"
+                            <input matEndDate formControlName="checkoutDate" (dateInput)="addCheckoutDate()"
                                 placeholder="Check-Out Date" disabled>
                         </mat-date-range-input>
                         <mat-datepicker-toggle matSuffix [for]="picker">
@@ -23,59 +23,70 @@
                             date
                         </mat-error>
                     </mat-form-field>
-                    <mat-form-field appearance="outline">
-                        <mat-label>Check-In Time 24hr Format</mat-label>
-                        <input matInput placeholder="24hr format" aria-label="24hr format" [ngxTimepicker]="checkinTime"
-                            [format]="24" formControlName="checkinTime" readonly>
-                        <ngx-material-timepicker #checkinTime></ngx-material-timepicker>
-                    </mat-form-field>
-                    <mat-form-field appearance="outline">
-                        <mat-label>Check-Out Time 24hr Format</mat-label>
-                        <input matInput placeholder="24hr format" aria-label="24hr format" [ngxTimepicker]="checkoutTime"
-                            [format]="24" formControlName="checkoutTime" readonly>
-                        <ngx-material-timepicker #checkoutTime (timeSet)="onSetCheckOutTime($event)">
-                        </ngx-material-timepicker>
-                    </mat-form-field>
+                    <div fxLayout="row" fxLayoutAlign="space-evenly stretch" fxLayoutGap="5px">
+                        <mat-form-field appearance="outline" fxFlex="50">
+                            <mat-label>Check-In Time 24hr Format</mat-label>
+                            <input matInput placeholder="24hr format" aria-label="24hr format" [ngxTimepicker]="checkinTime"
+                                [format]="24" formControlName="checkinTime" readonly>
+                            <ngx-material-timepicker #checkinTime></ngx-material-timepicker>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" fxFlex="50">
+                            <mat-label>Check-Out Time 24hr Format</mat-label>
+                            <input matInput placeholder="24hr format" aria-label="24hr format" [ngxTimepicker]="checkoutTime"
+                                [format]="24" formControlName="checkoutTime" readonly>
+                            <ngx-material-timepicker #checkoutTime (timeSet)="onSetCheckOutTime($event)">
+                            </ngx-material-timepicker>
+                        </mat-form-field>
+                    </div>                    
                     <div fxLayout="row" fxLayoutAlign="space-evenly stretch" fxLayoutGap="5px">
                         <span (click)="decrement()" class="counter"
-                            [class.disabled]="reservationForm.get('guests').value === 1">
+                            [class.disabled]="reservationForm.get('totalNoOfGuests').value === 1">
                             <span class="iconify" data-icon="ant-design:minus-circle-outlined" data-inline="false"
                                 data-width="30px" data-height="30px" style="margin-top: 10px;"></span>
                         </span>
                         <mat-form-field appearance="outline">
-                            <mat-label for="guests">Guests</mat-label>
-                            <input matInput placeholder="guests" formControlName="guests">
+                            <mat-label for="totalNoOfGuests">Guests</mat-label>
+                            <input matInput placeholder="totalNoOfGuests" formControlName="totalNoOfGuests">
                         </mat-form-field>
                         <span (click)="increment()" class="counter"
-                            [class.disabled]="reservationForm.get('guests').value === 4">
+                            [class.disabled]="reservationForm.get('totalNoOfGuests').value === 4">
                             <span class="iconify" data-icon="ant-design:plus-circle-outlined" data-inline="false"
                                 data-width="30px" data-height="30px" style="margin-top: 10px;"></span>
                         </span>
                     </div>
-                    <mat-form-field appearance="outline">
-                        <mat-label>Room Type</mat-label>
-                        <mat-select formControlName="roomType" (selectionChange)="onChangeRoomType($event.value)">
-                            <mat-option *ngFor="let roomType of roomTypes" [value]="roomType">
-                                {{roomType}}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                    <mat-form-field appearance="outline">
-                        <mat-label>Room Size</mat-label>
-                        <mat-select formControlName="roomSize" (selectionChange)="onChangeRoomSize($event.value)">
-                            <mat-option *ngFor="let roomSize of roomSizes" [value]="roomSize">
-                                {{roomSize}}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                    <mat-form-field appearance="outline">
-                        <mat-label>Room Number</mat-label>
-                        <mat-select formControlName="roomNumber" (selectionChange)="onChangeRoomNumber($event.value)">
-                            <mat-option *ngFor="let roomNumber of roomNumbers" [value]="roomNumber">
-                                {{roomNumber}}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
+                    <div fxLayout="row" fxLayoutAlign="space-between stretch" fxLayoutGap="5px">
+                        <mat-form-field appearance="outline" fxFlex="50">
+                            <mat-label>Room Type</mat-label>
+                            <mat-select formControlName="roomType" (selectionChange)="onChangeRoomType($event.value)">
+                                <mat-option *ngFor="let roomType of roomTypes" [value]="roomType">
+                                    {{roomType}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" fxFlex="50">
+                            <mat-label>Room Size</mat-label>
+                            <mat-select formControlName="roomSize" (selectionChange)="onChangeRoomSize($event.value)">
+                                <mat-option *ngFor="let roomSize of roomSizes" [value]="roomSize">
+                                    {{roomSize}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="space-between stretch" fxLayoutGap="5px">
+                        <mat-form-field appearance="outline" fxFlex="50">
+                            <mat-label>Room Number</mat-label>
+                            <mat-select formControlName="roomNumber" (selectionChange)="onChangeRoomNumber($event.value)">
+                                <mat-option *ngFor="let roomNumber of roomNumbers" [value]="roomNumber">
+                                    {{roomNumber}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" fxFlex="50">
+                            <mat-label for="roomPrice">Room Price</mat-label>
+                            <input matInput placeholder="Room Price" formControlName="roomPrice" readonly>
+                        </mat-form-field>
+                    </div>
+                    
                     <div fxLayout="row" fxLayoutAlign="end end" >
                         <button class="payment-button" mat-button mat-raised-button (click)="addRoom()">Add Room</button>
                     </div>                
@@ -128,7 +139,7 @@
                             <mat-label for="zip">Zip</mat-label>
                             <input matInput placeholder="Zip" formControlName="zip">
                         </mat-form-field>
-                        <mat-checkbox id="foreignNationalCheckBox" fxFlex="50" formControlName="foreignNational">Foreign National</mat-checkbox>
+                        <mat-checkbox id="foreignNationalCheckBox" fxFlex="50" formControlName="internationalGuests">Foreign National</mat-checkbox>
                     </div>
                     <div fxLayout="row" fxLayoutAlign="space-between stretch" fxLayoutGap="5px">
                         <mat-form-field appearance="outline" class="mobile-view" fxFlex="50">
@@ -144,18 +155,13 @@
                         </mat-form-field>
                     </div>
                     <div fxLayout="row" fxLayoutAlign="space-between stretch" fxLayoutGap="5px">
-                        <!-- <mat-label>Payment Complete?</mat-label> -->
-                        <mat-radio-group aria-label="Select an option" formControlName="fullPaymentDone" type="hidden">
-                            <!-- <mat-radio-button value="false">Yes</mat-radio-button>
-                            <mat-radio-button value="true">No</mat-radio-button> -->
-                        </mat-radio-group>
                         <mat-form-field appearance="outline" class="mobile-view" fxFlex="50">
                             <mat-label for="paymentAmount">Payment Amount</mat-label>
                             <input matInput placeholder="Payment" formControlName="paymentAmount">
                         </mat-form-field>
                         <mat-form-field appearance="outline" class="mobile-view" fxFlex="50">
-                            <mat-label for="totalPayableAmount">Total Payable Amount</mat-label>
-                            <input matInput formControlName="totalPayableAmount">
+                            <mat-label for="totalPaymentAmount">Total Payable Amount</mat-label>
+                            <input matInput formControlName="totalPaymentAmount" readonly>
                         </mat-form-field>
                     </div>
                     <div fxLayout="row" fxLayoutAlign="space-between stretch" fxLayoutGap="5px">
@@ -198,7 +204,9 @@
                             <th>Action</th>    
                             <th>Room Type</th>    
                             <th>Room Size</th>    
-                            <th>Room Number</th>    
+                            <th>Room Number</th>   
+                            <th>Room Price</th>
+                            <th>Guest</th> 
                         </tr>    
                     </thead>
                     <tbody>
@@ -215,6 +223,12 @@
                               <td>    
                                 <span>{{room.roomNumber}}</span>
                               </td>    
+                              <td>    
+                                <span>{{room.roomCost}}</span>
+                              </td>
+                              <td>    
+                                <span>{{room.noOfPersons}}</span>
+                              </td>
                           </tr>   
                     </tbody>
                 </table>
