@@ -29,15 +29,15 @@ export class DashboardHomeComponent implements OnInit {
     this.bookingDataService.bookings.forEach(ele =>{
       if(ele.checkinDone === true)
         checkedInGuest++;
-      if(true)
+      if(ele.bookingStatus==="COMPLETE")
         paymentComplete++;
-      else
+      if(ele.bookingStatus==="PENDING")
         paymentPending++;
       if(ele.checkinDate === currentDateStr){
         guestDetail = {
           id : ele.bookingId,
           guestName : ele.guestName,
-          roomNumber : ''
+          roomNumber : (ele.roomDetails.reduce((acc,curr)=>acc+curr.roomNumber+", ","")).slice(0,-2)
         }
         this.checkinGuestList.push(guestDetail)
       }
@@ -45,7 +45,7 @@ export class DashboardHomeComponent implements OnInit {
         guestDetail = {
           id : ele.bookingId,
           guestName : ele.guestName,
-          roomNumber : ''
+          roomNumber : (ele.roomDetails.reduce((acc,curr)=>acc+curr.roomNumber+", ","")).slice(0,-2)
         }
         this.checkoutGuestList.push(guestDetail)
       }

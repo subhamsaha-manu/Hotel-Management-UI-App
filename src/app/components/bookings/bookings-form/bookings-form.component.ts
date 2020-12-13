@@ -30,6 +30,7 @@ export class BookingsFormComponent implements OnInit {
   existingBooking: Booking;
   checkOutStatus: boolean;
   selectedRooms: Array<Room> = [];
+  condition:boolean=true;
 
   private _checkinDate: Date;
   private _checkinTime: string;
@@ -41,6 +42,8 @@ export class BookingsFormComponent implements OnInit {
   private _checkinDateStr: string;
   private _checkoutDateStr: string;
   private _totalPayableAmount: number = 0;
+  private _diffInDays: number;
+  private _updateRoomFinder: RoomFinder;
 
 
   constructor(private dataService: RefDataService, private bookingDataService: BookingsDataService, private route: ActivatedRoute, private location: Location) { }
@@ -116,6 +119,18 @@ export class BookingsFormComponent implements OnInit {
       groupReservation: this.existingBooking.groupReservation,
       bookingId:this.existingBooking.bookingId
       });
+      this._updateRoomFinder = new RoomFinder(
+       this.existingBooking.checkinDate,
+       this.existingBooking.checkoutDate,
+       this.existingBooking.checkinTime+":00",
+       this.existingBooking.checkoutTime+":00",
+       this.existingBooking.roomDetails 
+      )
+      this.dataService.roomTypes(this._updateRoomFinder).subscribe(
+        data => {
+          this.roomTypes = data
+          this.reservationForm.get('roomType').enable();
+        });
       
       this.selectedRooms = this.existingBooking.roomDetails;
       if (this.checkOutStatus) {
@@ -152,6 +167,9 @@ export class BookingsFormComponent implements OnInit {
 
   onChangeRoomType(roomType: string) {
     this._roomType = roomType;
+    if(this.existingBookingId){
+      this._roomFinder = this._updateRoomFinder;
+    }
     this._roomFinder.roomType = this._roomType;
 
     this.dataService.roomSizes(this._roomFinder).subscribe(
@@ -180,26 +198,9 @@ export class BookingsFormComponent implements OnInit {
       data => {
         this.roomPrice = data;
         this.reservationForm.get('roomPrice').setValue(this.roomPrice);
+        this.condition = false;
       }
     );
-  }
-
-  onSubmit() {
-    //console.log(this.reservationForm.value);
-    this.submitted = true;
-    if (this.existingBookingId && this.reservationForm.valid) {
-      this.bookingDataService.updateData(this.reservationForm.getRawValue(),this.selectedRooms).subscribe(data => {
-        Swal.fire('Booking with :- ' + data, 'Updated succesfully!!', 'success').then(() => {
-          this.location.back();
-        });
-      });
-    } else if (this.reservationForm.valid) {
-      this.bookingDataService.saveData(this.reservationForm.getRawValue(),this.selectedRooms).subscribe(data => {
-        Swal.fire('Booking with :- ' + data, 'added succesfully!!', 'success').then(() => {
-          this.location.back();
-        });
-      });
-    }
   }
 
   increment() {
@@ -226,11 +227,13 @@ export class BookingsFormComponent implements OnInit {
     };
     //console.log("Selected Room ",selectedRoom);
     this.selectedRooms.push(selectedRoom);
-    this.roomNumbers.splice(this.roomNumbers.indexOf(this.reservationForm.get('roomNumber').value), 1);    
-    this._totalPayableAmount += selectedRoom['roomCost'];
-    //console.log('Total Payable Amt ',this._totalPayableAmount);
+    //this.roomNumbers.splice(this.roomNumbers.indexOf(this.reservationForm.get('roomNumber').value), 1);    
+    this._diffInDays = (this.reservationForm.get('checkoutDate').value.getTime() - this.reservationForm.get('checkinDate').value.getTime())/ (1000 * 3600 * 24);
+    //console.log("Diff ",this._diffInDays);
+    this._totalPayableAmount += this._diffInDays*selectedRoom['roomCost'];
+    console.log('Total Payable Amt ',this._totalPayableAmount);
     this.reservationForm.patchValue({
-      reqdPaymentAmount:this._totalPayableAmount,
+      totalPaymentAmount:this._totalPayableAmount,
       totalNoOfGuests: 1,
       roomType: '',
       roomSize: '',
@@ -240,23 +243,44 @@ export class BookingsFormComponent implements OnInit {
     this.reservationForm.get('roomType').disable();
     this.reservationForm.get('roomSize').disable();
     this.reservationForm.get('roomNumber').disable();
-    /*this.dataService.roomTypes(this._checkinDate, this._checkinTime, this._checkoutDate, this._checkoutTime).subscribe(
+    this.condition = true;
+    this._roomFinder.selectedRooms = this.selectedRooms;
+    this.dataService.roomTypes(this._roomFinder).subscribe(
       data => {
         this.roomTypes = data
         this.reservationForm.get('roomType').enable()
-      });*/
+      });
   }
 
   deleteRow(index) {
     //console.log(this.selectedRooms[index]);
-    this._totalPayableAmount -= this.selectedRooms[index].roomCost;
+    this._totalPayableAmount -= this._diffInDays*this.selectedRooms[index].roomCost;
     this.reservationForm.patchValue({
-      reqdPaymentAmount:this._totalPayableAmount
+      totalPaymentAmount:this._totalPayableAmount
     });
-    this.roomTypes.push(this.selectedRooms[index].roomType);
-    this.roomSizes.push(this.selectedRooms[index].roomSize);
+    this.roomTypes.indexOf(this.selectedRooms[index].roomType) === -1 ?this.roomTypes.push(this.selectedRooms[index].roomType):'';
+    this.roomSizes.indexOf(this.selectedRooms[index].roomSize) === -1 ?this.roomSizes.push(this.selectedRooms[index].roomSize):'';
     this.roomNumbers.push(this.selectedRooms[index].roomNumber);
     this.selectedRooms.splice(index, 1);
+  }
+
+  
+  onSubmit() {
+    //console.log(this.reservationForm.value);
+    this.submitted = true;
+    if (this.existingBookingId && this.reservationForm.valid) {
+      this.bookingDataService.updateData(this.reservationForm.getRawValue(),this.selectedRooms).subscribe(data => {
+        Swal.fire('Booking with :- ' + data, 'Updated succesfully!!', 'success').then(() => {
+          this.location.back();
+        });
+      });
+    } else if (this.reservationForm.valid) {
+      this.bookingDataService.saveData(this.reservationForm.getRawValue(),this.selectedRooms).subscribe(data => {
+        Swal.fire('Booking with :- ' + data, 'added succesfully!!', 'success').then(() => {
+          this.location.back();
+        });
+      });
+    }
   }
 
   onReset() {

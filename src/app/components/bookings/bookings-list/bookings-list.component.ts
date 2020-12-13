@@ -71,9 +71,12 @@ export class BookingsListComponent {
         },
         { headerName: 'Guest Name', field: 'guestName' },
         { headerName: 'Phone', field: 'phone' },
-        { headerName: 'Room-No', field: '',width:150 },
-        { headerName: 'CheckOut', field: 'checkoutDate' },
-        { headerName: 'CheckOut', field: 'checkoutDate' }
+        { headerName: 'Room-No', cellRenderer:function(params){
+          var roomStr =  params.data.roomDetails.reduce((acc,curr)=>acc+curr.roomNumber+", ","");
+          return roomStr.slice(0,-2);
+        },width:150 },
+        { headerName: 'CheckIn', field: 'checkinDate' },
+        { headerName: 'CheckOut', field: 'checkoutDate'}
       ]
     }
   ];
@@ -94,6 +97,7 @@ export class BookingsListComponent {
 
   onGridReady(params) {
     setTimeout(() => {
+      this.bookingDataService.fetchData();
       this.gridApi = params.api;
       this.gridColumnApi = params.columnApi;
       //console.log("On grid ready ", this.bookingDataService.bookings)

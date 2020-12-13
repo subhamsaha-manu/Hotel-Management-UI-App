@@ -88,7 +88,7 @@
                     </div>
                     
                     <div fxLayout="row" fxLayoutAlign="end end" >
-                        <button class="payment-button" mat-button mat-raised-button (click)="addRoom()">Add Room</button>
+                        <button class="payment-button" mat-button mat-raised-button (click)="addRoom()" [disabled]="condition">Add Room</button>
                     </div>                
                 </div>
             </form>
