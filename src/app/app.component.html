@@ -7,7 +7,7 @@
   </mat-toolbar>
   <mat-sidenav-container class="all-wrap">
     <mat-sidenav #sidenav [mode]="mobileQuery.matches ? 'over' : 'side'" [fixedInViewport]="false"
-      [opened]="!mobileQuery.matches" fixedTopGap="56" [class.is-mobile]="mobileQuery.matches" class="sidenav" (click)="onSidenavClick()">
+      [opened]="!mobileQuery.matches" fixedTopGap="56" [class.is-mobile]="mobileQuery.matches" class="sidenav">
       <mat-nav-list style="margin-top: 110px;">
         <a class="link" mat-list-item [routerLink]="['/']">Home</a>
       </mat-nav-list>

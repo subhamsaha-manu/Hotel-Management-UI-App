@@ -1,96 +1,165 @@
-<div class="dashboard-content" fxFlex="100" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="center center">
-    <mat-card class="card-element" fxLayout="column">
-        <mat-card-header class="card-header">
-            <mat-card-title>Guest Invoice</mat-card-title>
-        </mat-card-header>
-        <mat-card-content fxLayout="column" fxLayoutGap="10px" fxLayoutAlign="space-around stretch"
-            style="margin-top: 10px;font-size: 16px;">
-            <div fxLayout="row">
-                <div fxFlex="50"> 
-                    <mat-label>Booking Id</mat-label>
-                    <mat-label> - </mat-label>
-                    <mat-label>{{existingBooking.bookingId}}</mat-label>
-                </div>
-                <div fxFlex="50" style="text-align: center;">
-                    <mat-label>Guest Name -  </mat-label>
-                    <mat-label fxFlex="50" style="text-align: center;">{{existingBooking.guestName}}</mat-label>
-                </div>
-            </div>
-            <hr>
-            <div fxLayout="row">
-                <div fxFlex="75"> 
-                    <span style="margin-top:10px" class="iconify" data-icon="flat-color-icons:calendar" data-inline="false" data-width="30px"
-                        data-height="30px"></span>
-                    <mat-label>{{existingBooking.checkinDate}}</mat-label>
-                    <mat-label> - </mat-label>
-                    <mat-label>{{existingBooking.checkoutDate}}</mat-label>
-                </div>
-                <div fxFlex="25" style="padding-top: 20px; text-align:start;">
-                    <mat-label>Guests-  </mat-label>
-                    <mat-label>{{existingBooking.totalNoOfGuests}}</mat-label>
-                </div>
-            </div>
-            <hr>
-            <table style="width:100%;font-size: 14px;">
-                <thead>
-                    <tr>    
-                        <th>Sl.No.</th>    
-                        <th>Room Type</th>    
-                        <th>Room Size</th>    
-                        <th>Room Number</th>   
-                        <th>Room Price</th>
-                        <th>Guest</th> 
-                    </tr>    
-                </thead>
-                <tbody>
-                    <tr *ngFor="let room of existingBooking.roomDetails; let i = index;">    
-                        <td>
-                            <span>{{i+1}}</span>
-                        </td>    
-                          <td>    
-                            <span>{{room.roomType}}</span>
-                          </td>    
-                          <td>    
-                            <span>{{room.roomSize}}</span>
-                          </td>    
-                          <td>    
-                            <span>{{room.roomNumber}}</span>
-                          </td>    
-                          <td>    
-                            <span>{{room.roomCost}}</span>
-                          </td>
-                          <td>    
-                            <span>{{room.noOfPersons}}</span>
-                          </td>
-                      </tr>   
-                </tbody>
-            </table>
-            <div fxLayout="row">
-                <mat-label fxFlex="50">Payable Amount</mat-label>
-                <div fxFlex="50" style="text-align: center;">
-                    <mat-label> Rs. </mat-label>
-                    <mat-label>{{existingBooking.totalPaymentAmount}}</mat-label>
-                </div>
-            </div>
-            <div fxLayout="row">
-                <mat-label fxFlex="50">Amount Paid</mat-label>
-                <div fxFlex="50" style="text-align: center;">
-                    <mat-label> Rs. </mat-label>
-                    <mat-label>{{existingBooking.paymentAmount}}</mat-label>
-                </div>
-            </div>
-            <hr>
-            <div fxLayout="row" style="font-size: 20px;">
-                <mat-label fxFlex="50">Amount To Be Paid</mat-label>
-                <div fxFlex="50" style="text-align: center;">
-                    <mat-label> Rs. </mat-label>
-                    <mat-label>{{existingBooking.totalPaymentAmount-existingBooking.paymentAmount}}</mat-label>
-                </div>
-            </div>
-        </mat-card-content>        
-        <mat-card-actions>
-            <button mat-raised-button fxFlex="50" (click)="close()" style="background:rgb(230, 230, 230) none repeat scroll 0% 0%;color: black;">Close</button>
-            <button mat-raised-button fxFlex="50" (click)="print()" style="background:#128036;color: white;">Print</button>
-        </mat-card-actions>
-    </mat-card>
+<div
+  class="dashboard-content"
+  fxFlex="100"
+  fxLayout="row"
+  fxLayout.xs="column"
+  fxLayoutAlign="center center"
+>
+  <mat-card class="card-element" fxLayout="column">
+    <mat-card-header class="card-header">
+      <mat-card-title>Guest Invoice</mat-card-title>
+    </mat-card-header>
+    <mat-card-content
+      fxLayout="column"
+      fxLayoutGap="10px"
+      fxLayoutAlign="space-around stretch"
+      style="margin-top: 10px; font-size: 16px"
+    >
+      <div fxLayout="row">
+        <div fxFlex="50">
+          <mat-label>Booking Id</mat-label>
+          <mat-label> - </mat-label>
+          <mat-label>{{ existingBooking.bookingId }}</mat-label>
+        </div>
+        <div fxFlex="50" style="text-align: center">
+          <mat-label>Guest Name - </mat-label>
+          <mat-label fxFlex="50" style="text-align: center">{{
+            existingBooking.guestName
+          }}</mat-label>
+        </div>
+      </div>
+      <hr />
+      <div fxLayout="row">
+        <div fxFlex="75">
+          <span
+            style="margin-top: 10px"
+            class="iconify"
+            data-icon="flat-color-icons:calendar"
+            data-inline="false"
+            data-width="30px"
+            data-height="30px"
+          ></span>
+          <mat-label>{{ existingBooking.checkinDate }}</mat-label>
+          <mat-label> - </mat-label>
+          <mat-label>{{ existingBooking.checkoutDate }}</mat-label>
+        </div>
+        <div fxFlex="25" style="padding-top: 20px; text-align: start">
+          <mat-label>Guests- </mat-label>
+          <mat-label>{{ existingBooking.totalNoOfGuests }}</mat-label>
+        </div>
+      </div>
+      <hr />
+      <div fxLayout="column">
+        <h3>Booking Details</h3>
+        <table style="width: 100%; font-size: 14px">
+          <thead>
+            <tr>
+              <th>Sl.No.</th>
+              <th>Room Type</th>
+              <th>Room Size</th>
+              <th>Room Number</th>
+              <th>Room Price</th>
+              <th>Guest</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let room of existingBooking.roomDetails; let i = index">
+              <td>
+                <span>{{ i + 1 }}</span>
+              </td>
+              <td>
+                <span>{{ room.roomType }}</span>
+              </td>
+              <td>
+                <span>{{ room.roomSize }}</span>
+              </td>
+              <td>
+                <span>{{ room.roomNumber }}</span>
+              </td>
+              <td>
+                <span>{{ room.roomCost }}</span>
+              </td>
+              <td>
+                <span>{{ room.noOfPersons }}</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>  
+      </div>
+      <div fxLayout="column">
+        <h3>Payment Details</h3>
+        <table style="width: 100%; font-size: 14px">
+          <thead>
+            <tr>
+              <th>Sl.No.</th>
+              <th>Payment Date</th>
+              <th>Payment Mode</th>
+              <th>Payment Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let paymentDetail of existingBooking.paymentDetails; let i = index">
+              <td>
+                <span>{{ i + 1 }}</span>
+              </td>
+              <td>
+                <span>{{ paymentDetail.paymentDate }}</span>
+              </td>
+              <td>
+                <span>{{ paymentDetail.paymentMode }}</span>
+              </td>
+              <td>
+                <span>{{ paymentDetail.paymentAmount }}</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>      
+      <div fxLayout="row">
+        <mat-label fxFlex="50">Payable Amount</mat-label>
+        <div fxFlex="50" style="text-align: center">
+          <mat-label> Rs. </mat-label>
+          <mat-label>{{ existingBooking.totalPayableAmount }}</mat-label>
+        </div>
+      </div>
+      <div fxLayout="row">
+        <mat-label fxFlex="50">Amount Paid</mat-label>
+        <div fxFlex="50" style="text-align: center">
+          <mat-label> Rs. </mat-label>
+          <mat-label>{{ existingBooking.paidAmount }}</mat-label>
+        </div>
+      </div>
+      <hr />
+      <div fxLayout="row" style="font-size: 20px">
+        <mat-label fxFlex="50">Amount To Be Paid</mat-label>
+        <div fxFlex="50" style="text-align: center">
+          <mat-label> Rs. </mat-label>
+          <mat-label>{{
+            existingBooking.totalPayableAmount - existingBooking.paidAmount
+          }}</mat-label>
+        </div>
+      </div>
+    </mat-card-content>
+    <mat-card-actions>
+      <button
+        mat-raised-button
+        fxFlex="50"
+        (click)="close()"
+        style="
+          background: rgb(230, 230, 230) none repeat scroll 0% 0%;
+          color: black;
+        "
+      >
+        Close
+      </button>
+      <button
+        mat-raised-button
+        fxFlex="50"
+        (click)="print()"
+        style="background: #128036; color: white"
+      >
+        Print
+      </button>
+    </mat-card-actions>
+  </mat-card>
 </div>

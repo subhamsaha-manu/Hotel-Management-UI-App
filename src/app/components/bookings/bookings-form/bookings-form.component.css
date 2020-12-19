@@ -1,52 +1,68 @@
-.reservation-form-card {
-  max-width: 100%;
+.card-divs{
+  width: 100%;
+}
+.card-element {
+  margin: 10px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 2px 10px 8px 2px #888888;
 }
 
-.reservation-form {
-    background-color:white;
-    padding: 15px
+.mat-card-title {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 25px;
+  font-weight: bold;
+  line-height: 1.6;
 }
 
-/* Border */
-.mat-form-field-appearance-outline .mat-form-field-outline {
-  color: black;
+.card-header {
+  background: rgb(249, 249, 251) none repeat scroll 0% 0%;
+  justify-content: center;
+  margin-bottom: 5px;
+  padding-top: 15px;
 }
 
-
-/* Font color */
-input.mat-input-element {
-  color: black;
+.counter:hover {
+  cursor: pointer;
 }
 
-.formContainer{
-  background-color: gainsboro !important;
+.disabled {
+  pointer-events: none;
+  color: grey;
 }
 
-.form-group{
-  border: 5px solid black;
-  padding:10px 0px 0px 10px;
-  margin-bottom: 15px;
+button {
+  width: 50%;
+  font-family: 'Open Sans', sans-serif;
 }
 
-legend {
-  background-color: gray;
-  color: white;
-  padding: 5px 10px;
+.payment-button {
+  background: #2bafe2;
+  margin-bottom: 20px;
+  color: white;   
 }
 
-mat-radio-button{
-  margin-right: 10px;
+#groupBookingCheckBox {
+  align-self: start;
+  margin-bottom: 20px;
+  margin-left: 10px
 }
 
-.invisible{
-  display: block;
-  visibility: hidden;
-  height: 0;
-  width: 0;
+::ng-deep #foreignNationalCheckBox{
+  margin-top: 18px;
 }
+
 
 @media only screen and (max-width: 600px) {
-  .formContainer {
-    color: gainsboro;
+  .card-element {
+      width: 90%;
+  }
+  #selectedRoomsCard{
+      width: 96%;
+  }
+  .mobile-view{
+      width: 190px !important;
+      margin-right: 4px !important;
+      margin-left: 4px !important;
   }
 }

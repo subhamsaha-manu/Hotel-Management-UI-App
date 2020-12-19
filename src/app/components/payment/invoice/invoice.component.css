@@ -1,7 +1,7 @@
 .card-element{
     margin: 10px;
     width: 33.3%;
-    height: 70%;
+    height: auto;
     box-shadow: 2px 10px 8px 2px #888888;
 }
 
@@ -24,10 +24,9 @@ hr {
     height: 1px;
     border: 0;
     border-top: 1px solid #ccc;
-    margin: 1em 0;
+    margin: 1px 0;
     padding: 0;
     width: 100%;
-    margin-top: -35px;
 }
 
 .mat-card{
